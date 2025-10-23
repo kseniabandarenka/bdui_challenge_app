@@ -1,0 +1,57 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'bdui_text_style_model.dart';
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+BDUITextStyleModel _$BDUITextStyleModelFromJson(Map<String, dynamic> json) =>
+    BDUITextStyleModel(
+      fontSize: (json['fontSize'] as num?)?.toDouble(),
+      fontWeight: $enumDecodeNullable(
+        _$BDUIFontWeightEnumMap,
+        json['fontWeight'],
+      ),
+      color: json['color'] as String?,
+      textAlign: $enumDecodeNullable(_$BDUITextAlignEnumMap, json['textAlign']),
+      fontFamily: json['fontFamily'] as String?,
+      letterSpacing: (json['letterSpacing'] as num?)?.toDouble(),
+      lineHeight: (json['lineHeight'] as num?)?.toDouble(),
+      underline: json['underline'] as bool?,
+      italic: json['italic'] as bool?,
+    );
+
+Map<String, dynamic> _$BDUITextStyleModelToJson(BDUITextStyleModel instance) =>
+    <String, dynamic>{
+      'fontSize': instance.fontSize,
+      'fontWeight': _$BDUIFontWeightEnumMap[instance.fontWeight],
+      'color': instance.color,
+      'textAlign': _$BDUITextAlignEnumMap[instance.textAlign],
+      'fontFamily': instance.fontFamily,
+      'letterSpacing': instance.letterSpacing,
+      'lineHeight': instance.lineHeight,
+      'underline': instance.underline,
+      'italic': instance.italic,
+    };
+
+const _$BDUIFontWeightEnumMap = {
+  BDUIFontWeight.normal: 'normal',
+  BDUIFontWeight.bold: 'bold',
+  BDUIFontWeight.w100: 'w100',
+  BDUIFontWeight.w200: 'w200',
+  BDUIFontWeight.w300: 'w300',
+  BDUIFontWeight.w400: 'w400',
+  BDUIFontWeight.w500: 'w500',
+  BDUIFontWeight.w600: 'w600',
+  BDUIFontWeight.w700: 'w700',
+  BDUIFontWeight.w800: 'w800',
+  BDUIFontWeight.w900: 'w900',
+};
+
+const _$BDUITextAlignEnumMap = {
+  BDUITextAlign.left: 'left',
+  BDUITextAlign.center: 'center',
+  BDUITextAlign.right: 'right',
+  BDUITextAlign.justify: 'justify',
+};

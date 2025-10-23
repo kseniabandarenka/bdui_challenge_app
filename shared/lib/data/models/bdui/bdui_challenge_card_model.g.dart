@@ -1,0 +1,57 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'bdui_challenge_card_model.dart';
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+BDUIChallengeCardModel _$BDUIChallengeCardModelFromJson(
+  Map<String, dynamic> json,
+) => BDUIChallengeCardModel(
+  id: json['id'] as String,
+  type: $enumDecode(_$BDUITypeEnumMap, json['type']),
+  title: json['title'] as String,
+  category: json['category'] as String,
+  description: json['description'] as String?,
+  progressCurrent: (json['progressCurrent'] as num).toDouble(),
+  progressTotal: (json['progressTotal'] as num).toDouble(),
+  completed: json['completed'] as bool,
+  isInProgress: json['isInProgress'] as bool,
+  progressPercentage: (json['progressPercentage'] as num).toDouble(),
+  actions: (json['actions'] as List<dynamic>)
+      .map((e) => BDUIActionModel.fromJson(e as Map<String, dynamic>))
+      .toList(),
+  action: BDUICardActionModel.fromJson(json['action'] as Map<String, dynamic>),
+);
+
+Map<String, dynamic> _$BDUIChallengeCardModelToJson(
+  BDUIChallengeCardModel instance,
+) => <String, dynamic>{
+  'id': instance.id,
+  'type': _$BDUITypeEnumMap[instance.type]!,
+  'title': instance.title,
+  'category': instance.category,
+  'description': instance.description,
+  'progressCurrent': instance.progressCurrent,
+  'progressTotal': instance.progressTotal,
+  'completed': instance.completed,
+  'isInProgress': instance.isInProgress,
+  'progressPercentage': instance.progressPercentage,
+  'actions': instance.actions,
+  'action': instance.action,
+};
+
+const _$BDUITypeEnumMap = {
+  BDUIType.screen: 'screen',
+  BDUIType.column: 'column',
+  BDUIType.container: 'container',
+  BDUIType.row: 'row',
+  BDUIType.text: 'text',
+  BDUIType.button: 'button',
+  BDUIType.progressBar: 'progress_bar',
+  BDUIType.textField: 'text_field',
+  BDUIType.challengeCard: 'challenge_card',
+  BDUIType.challengeList: 'challenge_list',
+  BDUIType.numberInput: 'number_input',
+};

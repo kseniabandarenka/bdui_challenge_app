@@ -1,0 +1,12 @@
+name: bdui_server
+environment:
+  sdk: '^3.8.0'
+
+dependencies:
+  shelf: ^1.4.0
+  shelf_router: ^1.1.0
+  shared:
+    path: ../shared
+
+dev_dependencies:
+  test: ^1.21.0

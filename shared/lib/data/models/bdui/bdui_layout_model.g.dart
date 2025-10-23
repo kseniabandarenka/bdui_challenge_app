@@ -1,0 +1,35 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'bdui_layout_model.dart';
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+BDUILayoutModel _$BDUILayoutModelFromJson(Map<String, dynamic> json) =>
+    BDUILayoutModel(
+      type: $enumDecode(_$BDUITypeEnumMap, json['type']),
+      children: (json['children'] as List<dynamic>)
+          .map((e) => BDUIElementModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$BDUILayoutModelToJson(BDUILayoutModel instance) =>
+    <String, dynamic>{
+      'type': _$BDUITypeEnumMap[instance.type]!,
+      'children': instance.children,
+    };
+
+const _$BDUITypeEnumMap = {
+  BDUIType.screen: 'screen',
+  BDUIType.column: 'column',
+  BDUIType.container: 'container',
+  BDUIType.row: 'row',
+  BDUIType.text: 'text',
+  BDUIType.button: 'button',
+  BDUIType.progressBar: 'progress_bar',
+  BDUIType.textField: 'text_field',
+  BDUIType.challengeCard: 'challenge_card',
+  BDUIType.challengeList: 'challenge_list',
+  BDUIType.numberInput: 'number_input',
+};
