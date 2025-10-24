@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:shared/data/models/bdui/bdui_element_model.dart';
 
 class ProgressBarRenderer {
-  static Widget render(BDUIElementModel model, BuildContext context, VoidCallback? onDataUpdated) {
+  static Widget render(BDUIElementModel model, BuildContext context,
+      VoidCallback? onDataUpdated) {
     try {
       // Для совместимости с JSON структурой, получаем данные из toJson()
       final json = model.toJson();
