@@ -4,14 +4,12 @@ part 'bdui_screen_model.g.dart';
 
 @JsonSerializable()
 class BDUIScreenModel {
-  final BDUIType type;
   @JsonKey(name: 'screen_type')
   final BDUIScreenType screenType;
   final String? title;
-  final BDUILayoutModel layout;
+  final BDUIElementModel layout;
 
   BDUIScreenModel({
-    required this.type,
     required this.screenType,
     this.title,
     required this.layout,

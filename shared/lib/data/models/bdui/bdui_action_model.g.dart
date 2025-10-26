@@ -21,7 +21,6 @@ Map<String, dynamic> _$BDUIActionModelToJson(BDUIActionModel instance) =>
     };
 
 const _$BDUITypeEnumMap = {
-  BDUIType.screen: 'screen',
   BDUIType.column: 'column',
   BDUIType.container: 'container',
   BDUIType.row: 'row',

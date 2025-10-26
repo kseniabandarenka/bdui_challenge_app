@@ -3,10 +3,9 @@ import 'package:shared/shared.dart';
 class HomeScreenBDUIGenerator {
   BDUIScreenModel generate(List<Challenge> challenges) {
     return BDUIScreenModel(
-      type: BDUIType.screen,
       screenType: BDUIScreenType.challengesList,
       title: 'Мои челленджи',
-      layout: BDUILayoutModel(
+      layout: BDUIElementModel(
         type: BDUIType.column,
         children: [
           _buildHeader(challenges),

@@ -9,10 +9,8 @@ part of 'bdui_text_style_model.dart';
 BDUITextStyleModel _$BDUITextStyleModelFromJson(Map<String, dynamic> json) =>
     BDUITextStyleModel(
       fontSize: (json['fontSize'] as num?)?.toDouble(),
-      fontWeight: $enumDecodeNullable(
-        _$BDUIFontWeightEnumMap,
-        json['fontWeight'],
-      ),
+      fontWeight:
+          $enumDecodeNullable(_$BDUIFontWeightEnumMap, json['fontWeight']),
       color: json['color'] as String?,
       textAlign: $enumDecodeNullable(_$BDUITextAlignEnumMap, json['textAlign']),
       fontFamily: json['fontFamily'] as String?,

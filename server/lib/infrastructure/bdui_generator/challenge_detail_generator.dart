@@ -3,10 +3,9 @@ import 'package:shared/shared.dart';
 class ChallengeDetailBDUIGenerator {
   BDUIScreenModel generate(Challenge challenge) {
     return BDUIScreenModel(
-      type: BDUIType.screen,
       screenType: BDUIScreenType.challengeDetail,
       title: challenge.title,
-      layout: BDUILayoutModel(
+      layout: BDUIElementModel(
         type: BDUIType.column,
         children: [
           _buildHeader(challenge),

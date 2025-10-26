@@ -14,17 +14,17 @@ class BDUIElementModel {
   final BDUITextStyleModel? style;
   final BDUIDecorationModel? decoration;
   final BDUIElementModel? child;
-  final List<BDUIElementModel>? children;
   final List<BDUIChallengeCardModel>? challenges;
+  final List<BDUIElementModel>? children;
   final List<BDUIActionModel>? actions;
 
   BDUIElementModel({
     required this.type,
+   this.children,
     this.value,
     this.style,
     this.decoration,
     this.child,
-    this.children,
     this.challenges,
     this.actions,
   });
@@ -32,5 +32,6 @@ class BDUIElementModel {
   factory BDUIElementModel.fromJson(Map<String, dynamic> json) =>
       _$BDUIElementModelFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$BDUIElementModelToJson(this);
 }

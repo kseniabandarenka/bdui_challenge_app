@@ -4,7 +4,7 @@ import 'package:client/navigation/navigation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared/data/models/bdui/bdui_type_model.dart';
+import 'package:shared/shared.dart';
 
 class BDUIEngine {
   static final Map<String, TextEditingController> _textControllers = {};
@@ -15,128 +15,116 @@ class BDUIEngine {
     required BuildContext context,
     VoidCallback? onDataUpdated,
   }) {
-    final typeString = json['type'] as String?;
+    final model = BDUIScreenModel.fromJson(json);
     
-    // 🔥 ОБРАБОТКА ТИПА 'screen' С LAYOUT
-    if (typeString == 'screen') {
-      final layout = json['layout'];
-      if (layout != null && layout is Map<String, dynamic>) {
-        return renderFromJson(
-          json: layout, 
-          context: context, 
-          onDataUpdated: onDataUpdated
-        );
-      }
-    }
-    
-    if (typeString == null) {
-      return _buildErrorWidget('Отсутствует тип виджета в данных: ${json.keys}');
-    }
+    return renderBDUIModel(
+      model: model.layout, 
+      context: context, 
+      onDataUpdated: onDataUpdated
+    );
+  } 
 
+  static Widget renderBDUIModel({
+    required BDUIElementModel model,
+    required BuildContext context,
+    VoidCallback? onDataUpdated,
+  }) {
     try {
-      final type = BDUIType.fromJson() .fromString(typeString);
+      final type = model.type;
       
       switch (type) {
         case BDUIType.column:
-          return _renderColumn(json, context, onDataUpdated);
+          return _renderColumn(model, context, onDataUpdated);
         case BDUIType.container:
-          return _renderContainer(json, context, onDataUpdated);
+          return _renderContainer(model, context, onDataUpdated);
         case BDUIType.row:
-          return _renderRow(json, context, onDataUpdated);
+          return _renderRow(model, context, onDataUpdated);
         case BDUIType.text:
-          return _renderText(json);
+          return _renderText(model);
         case BDUIType.button:
-          return _renderButton(json, context, onDataUpdated);
+          return _renderButton(model, context, onDataUpdated);
         case BDUIType.progressBar:
-          return _renderProgressBar(json);
+          return _renderProgressBar(model);
         case BDUIType.challengeCard:
-          return _renderChallengeCard(json, context, onDataUpdated);
+          return _renderChallengeCard(model, context, onDataUpdated);
         case BDUIType.challengeList:
-          return _renderChallengeList(json, context, onDataUpdated);
+          return _renderChallengeList(model, context, onDataUpdated);
         case BDUIType.textField:
-          return _renderTextField(json);
+          return _renderTextField(model);
         case BDUIType.numberInput:
-          return _renderNumberInput(json);
-        }
+          return _renderNumberInput(model);
+      }
     } catch (e) {
-      return _buildErrorWidget('Ошибка рендеринга: $e\nДанные: $json');
+      return _buildErrorWidget('Ошибка рендеринга: $e\nТип: ${model.type}');
     }
   }
 
   // 📦 МЕТОДЫ РЕНДЕРИНГА
 
-  static Widget _renderColumn(Map<String, dynamic> json, BuildContext context, VoidCallback? onDataUpdated) {
+  static Widget _renderColumn(BDUIElementModel model, BuildContext context, VoidCallback? onDataUpdated) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: _renderChildren(json['children'], context, onDataUpdated),
+      children: _renderChildren(model.children, context, onDataUpdated),
     );
   }
 
-  static Widget _renderContainer(Map<String, dynamic> json, BuildContext context, VoidCallback? onDataUpdated) {
-    final decoration = json['decoration'] as Map<String, dynamic>?;
-    final child = json['child'] as Map<String, dynamic>?;
-    final children = json['children'] as List<dynamic>?;
-
+  static Widget _renderContainer(BDUIElementModel model, BuildContext context, VoidCallback? onDataUpdated) {
     return Container(
       decoration: BoxDecoration(
-        color: _parseColor(decoration?['color']),
-        borderRadius: decoration?['borderRadius'] != null 
-            ? BorderRadius.circular((decoration!['borderRadius'] as num).toDouble())
+        color: _parseColor(model.decoration?.color),
+        borderRadius: model.decoration?.borderRadius != null 
+            ? BorderRadius.circular(model.decoration!.borderRadius!.all?.toDouble() ?? 0)
             : null,
       ),
-      padding: _parseEdgeInsets(decoration?['padding']),
-      margin: _parseEdgeInsets(decoration?['margin']),
-      child: child != null 
-          ? renderFromJson(
-              json: child, 
+      padding: _parseBDUIPadding(model.decoration?.padding),
+      margin: _parseBDUIPadding(model.decoration?.margin),
+      child: model.child != null 
+          ? renderBDUIModel(
+              model: model.child!, 
               context: context,
               onDataUpdated: onDataUpdated,
             )
-          : (children != null 
+          : (model.children != null 
               ? Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: _renderChildren(children, context, onDataUpdated),
+                  children: _renderChildren(model.children!, context, onDataUpdated),
                 )
               : null),
     );
   }
 
-  static Widget _renderRow(Map<String, dynamic> json, BuildContext context, VoidCallback? onDataUpdated) {
+  static Widget _renderRow(BDUIElementModel model, BuildContext context, VoidCallback? onDataUpdated) {
     return Row(
-      children: _renderChildren(json['children'], context, onDataUpdated),
+      children: _renderChildren(model.children, context, onDataUpdated),
     );
   }
 
-  static Widget _renderText(Map<String, dynamic> json) {
+  static Widget _renderText(BDUIElementModel model) {
     return Text(
-      json['value'] ?? '',
+      model.value ?? '',
       style: TextStyle(
-        fontSize: (json['style']?['fontSize'] as num?)?.toDouble() ?? 16,
-        fontWeight: json['style']?['fontWeight'] == 'bold' 
-            ? FontWeight.bold 
-            : FontWeight.normal,
-        color: _parseColor(json['style']?['color']),
+        fontSize: model.style?.fontSize ?? 16,
+        fontWeight: _parseFontWeight(model.style?.fontWeight),
+        color: _parseColor(model.style?.color),
       ),
     );
   }
 
-  static Widget _renderButton(Map<String, dynamic> json, BuildContext context, VoidCallback? onDataUpdated) {
-    final style = json['style'] as Map<String, dynamic>?;
-    
+  static Widget _renderButton(BDUIElementModel model, BuildContext context, VoidCallback? onDataUpdated) {
     return Center(
       child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Row(
           children: [
             Expanded(
               child: ElevatedButton(
-                onPressed: () => _handleAction(json['action'], context, onDataUpdated),
+                onPressed: () => _handleActions(model.actions, context, onDataUpdated),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: _parseColor(style?['backgroundColor']),
-                  foregroundColor: _parseColor(style?['textColor']),
-                  padding: _parseEdgeInsets(style?['padding']),
+                  backgroundColor: _parseColor(model.decoration?.color),
+                  foregroundColor: _parseColor(model.style?.color),
+                  padding: _parseBDUIPadding(model.decoration?.padding),
                 ),
-                child: Text(json['text'] ?? 'Кнопка'),
+                child: Text(model.value ?? 'Кнопка'),
               ),
             ),
           ],
@@ -145,9 +133,11 @@ class BDUIEngine {
     );
   }
 
-  static Widget _renderProgressBar(Map<String, dynamic> json) {
-    final current = (json['current'] as num?)?.toDouble() ?? 0;
-    final total = (json['total'] as num?)?.toDouble() ?? 1;
+  static Widget _renderProgressBar(BDUIElementModel model) {
+    // Парсим значение прогресса из value в формате "current/total"
+    final progressParts = model.value?.split('/') ?? ['0', '1'];
+    final current = double.tryParse(progressParts[0]) ?? 0;
+    final total = double.tryParse(progressParts[1]) ?? 1;
     final progress = current / total;
 
     return Column(
@@ -166,36 +156,28 @@ class BDUIEngine {
     );
   }
 
-  static Widget _renderTextField(Map<String, dynamic> json) {
-    final key = json['key'] as String? ?? 'field_${DateTime.now().millisecondsSinceEpoch}';
+  static Widget _renderTextField(BDUIElementModel model) {
+    final key = model.value ?? 'field_${DateTime.now().millisecondsSinceEpoch}';
     
     _textControllers[key] ??= TextEditingController(
-      text: json['value']?.toString() ?? ''
+      text: model.value ?? ''
     );
     
     return TextField(
-  controller: _textControllers[key]!,
-  keyboardType: json['keyboard_type'] == 'number' 
-      ? const TextInputType.numberWithOptions(decimal: true)
-      : TextInputType.text,
-  inputFormatters: json['keyboard_type'] == 'number' 
-      ? [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,1}$'))]
-      : null,
-  decoration: InputDecoration(
-    labelText: json['label'],
-    hintText: json['placeholder'],
-    border: const OutlineInputBorder(),
-  ),
-);
+      controller: _textControllers[key]!,
+      keyboardType: TextInputType.text,
+      decoration: InputDecoration(
+        labelText: model.value,
+        hintText: model.value,
+        border: const OutlineInputBorder(),
+      ),
+    );
   }
 
-  static Widget _renderChallengeCard(Map<String, dynamic> json, BuildContext context, VoidCallback? onDataUpdated) {
+  static Widget _renderChallengeCard(BDUIChallengeCardModel model, BuildContext context, VoidCallback? onDataUpdated) {
     return GestureDetector(
       onTap: () {
-        final action = json['action'];
-        if (action != null) {
-          _handleAction(action, context, onDataUpdated);
-        }
+        _handleActions([model.action], context, onDataUpdated);
       },
       child: Card(
         margin: const EdgeInsets.all(8),
@@ -207,36 +189,38 @@ class BDUIEngine {
               Row(
                 children: [
                   Text(
-                    json['category'] ?? '🎯',
+                    model.value ?? '🎯',
                     style: const TextStyle(fontSize: 14, color: Colors.grey),
                   ),
                   const Spacer(),
-                  if (json['completed'] == true)
+                  if (model.challenges?.isNotEmpty == true && model.challenges!.first.completed == true)
                     const Icon(Icons.check_circle, color: Colors.green, size: 20),
                 ],
               ),
               const SizedBox(height: 8),
               Text(
-                json['title'] ?? 'Без названия',
+                model.value ?? 'Без названия',
                 style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              if (json['description'] != null) ...[
+              if (model.challenges?.isNotEmpty == true && model.challenges!.first.description != null) ...[
                 const SizedBox(height: 8),
                 Text(
-                  json['description']!,
+                  model.challenges!.first.description!,
                   style: TextStyle(color: Colors.grey[600]),
                 ),
               ],
-              if (json['progressCurrent'] != null && json['progressTotal'] != null) ...[
+              if (model.challenges?.isNotEmpty == true && 
+                  model.challenges!.first.progressCurrent != null && 
+                  model.challenges!.first.progressTotal != null) ...[
                 const SizedBox(height: 12),
-                _renderProgressBar({
-                  'current': json['progressCurrent'],
-                  'total': json['progressTotal'],
-                }),
+                _renderProgressBar(BDUIElementModel(
+                  type: BDUIType.progressBar,
+                  value: '${model.challenges!.first.progressCurrent}/${model.challenges!.first.progressTotal}',
+                )),
               ],
-              if (json['actions'] != null) ...[
+              if (model.actions != null) ...[
                 const SizedBox(height: 12),
-                ..._renderChildren(json['actions'], context, onDataUpdated),
+                ..._renderActions(model.actions!, context, onDataUpdated),
               ],
             ],
           ),
@@ -245,67 +229,107 @@ class BDUIEngine {
     );
   }
 
-  static Widget _renderChallengeList(Map<String, dynamic> json, BuildContext context, VoidCallback? onDataUpdated) {
-    final challenges = json['challenges'] as List<dynamic>?;
-    
+  static Widget _renderChallengeList(BDUIElementModel model, BuildContext context, VoidCallback? onDataUpdated) {
     return Column(
-      children: challenges?.map((challenge) {
-        return _renderChallengeCard(challenge as Map<String, dynamic>, context, onDataUpdated);
+      children: model.challenges?.map((challenge) {
+        return _renderChallengeCard(BDUIElementModel(
+          type: BDUIType.challengeCard,
+          value: challenge.title,
+          challenges: [challenge],
+          actions: challenge.actions,
+        ), context, onDataUpdated);
       }).toList() ?? [],
+    );
+  }
+
+  static Widget _renderNumberInput(BDUIElementModel model) {
+    final key = model.value ?? 'number_${DateTime.now().millisecondsSinceEpoch}';
+    
+    _textControllers[key] ??= TextEditingController(
+      text: model.value ?? ''
+    );
+
+    return TextFormField(
+      controller: _textControllers[key]!,
+      keyboardType: TextInputType.numberWithOptions(decimal: true),
+      decoration: InputDecoration(
+        labelText: model.value,
+        hintText: model.value,
+        border: const OutlineInputBorder(),
+        prefixIcon: const Icon(Icons.numbers),
+      ),
+      validator: (value) {
+        if (value != null && value.isNotEmpty) {
+          final number = double.tryParse(value);
+          if (number == null) return 'Введите число';
+        }
+        return null;
+      },
     );
   }
 
   // 🛠️ ВСПОМОГАТЕЛЬНЫЕ МЕТОДЫ
 
-  static List<Widget> _renderChildren(List<dynamic>? children, BuildContext context, VoidCallback? onDataUpdated) {
+  static List<Widget> _renderChildren(List<BDUIElementModel>? children, BuildContext context, VoidCallback? onDataUpdated) {
     return children?.map((child) {
-      return renderFromJson(
-        json: child as Map<String, dynamic>, 
+      return renderBDUIModel(
+        model: child, 
         context: context,
         onDataUpdated: onDataUpdated,
       );
     }).toList() ?? [];
   }
 
-  static void _handleAction(dynamic action, BuildContext context, VoidCallback? onDataUpdated) {
-    print('🔍 BDUI Action received: $action');
-    
-    if (action is Map<String, dynamic>) {
-      final typeString = action['type'] as String?;
-      
-      if (typeString == null) {
-        print('⚠️ Действие без типа: $action');
-        return;
-      }
+  static List<Widget> _renderActions(List<BDUIActionModel> actions, BuildContext context, VoidCallback? onDataUpdated) {
+    return actions.map((action) {
+      return ElevatedButton(
+        onPressed: () => _handleAction(action.action, context, onDataUpdated),
+        child: Text(action.text ?? 'Действие'),
+      );
+    }).toList();
+  }
 
-      try {
-        final actionType = ActionTypeExtension.fromString(typeString);
-        
-        switch (actionType) {
-          case ActionType.navigate:
-            _handleNavigateAction(action, context);
-            break;
-          case ActionType.trackProgress:
-            _handleTrackProgress(action, context, onDataUpdated);
-            break;
-          case ActionType.showBottomSheet:
-            _handleShowBottomSheet(action, context, onDataUpdated);
-            break;
-          default:
-            print('⚠️ Необработанное действие: $actionType');
-        }
-      } catch (e) {
-        print('❌ Ошибка обработки действия: $e');
-      }
+  static void _handleActions(List<BDUIActionModel>? actions, BuildContext context, VoidCallback? onDataUpdated) {
+    if (actions != null && actions.isNotEmpty) {
+      _handleAction(actions.first.action, context, onDataUpdated);
     }
   }
 
-  static void _handleShowBottomSheet(Map<String, dynamic> action, BuildContext context, VoidCallback? onDataUpdated) {
-    final sheetData = action['sheet'];
-    _showCustomBottomSheet(sheetData, context, onDataUpdated);
+  static void _handleAction(BDUIActionData? action, BuildContext context, VoidCallback? onDataUpdated) {
+    print('🔍 BDUI Action received: $action');
+    
+    if (action == null) {
+      print('⚠️ Действие не указано');
+      return;
+    }
+
+    try {
+      switch (action.type) {
+        case BDUIActionType.navigate:
+          _handleNavigateAction(action, context);
+          break;
+        case BDUIActionType.trackProgress:
+          _handleTrackProgress(action, context, onDataUpdated);
+          break;
+        case BDUIActionType.showBottomSheet:
+          _handleShowBottomSheet(action, context, onDataUpdated);
+          break;
+        default:
+          print('⚠️ Необработанное действие: ${action.type}');
+      }
+    } catch (e) {
+      print('❌ Ошибка обработки действия: $e');
+    }
   }
 
-  static void _showCustomBottomSheet(Map<String, dynamic> sheetData, BuildContext context, VoidCallback? onDataUpdated) {
+  static void _handleShowBottomSheet(BDUIActionData action, BuildContext context, VoidCallback? onDataUpdated) {
+    final sheetData = action.sheet;
+    if (sheetData != null) {
+      _showCustomBottomSheet(sheetData, context, onDataUpdated);
+    }
+  }
+
+  static void _showCustomBottomSheet(BDUIElementModel sheetData, BuildContext context, VoidCallback? onDataUpdated) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -313,7 +337,7 @@ class BDUIEngine {
     );
   }
 
-  static Widget _buildBottomSheetContent(Map<String, dynamic> data, BuildContext context, VoidCallback? onDataUpdated) {
+  static Widget _buildBottomSheetContent(BDUIElementModel data, BuildContext context, VoidCallback? onDataUpdated) {
     return SingleChildScrollView(
       padding: EdgeInsets.only(
         bottom: MediaQuery.of(context).viewInsets.bottom,
@@ -323,13 +347,15 @@ class BDUIEngine {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-              data['title'] ?? 'Отметить прогресс',
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 20),
-            renderFromJson(
-              json: data['child'], 
+            if (data.value != null) ...[
+              Text(
+                data.value!,
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 20),
+            ],
+            renderBDUIModel(
+              model: data, 
               context: context,
               onDataUpdated: onDataUpdated,
             ),
@@ -339,80 +365,40 @@ class BDUIEngine {
     );
   }
 
-  static void _handleNavigateAction(Map<String, dynamic> action, BuildContext context) {
-    final screen = action['screen'] as String?;
-    final challengeId = action['challenge_id'] as String?;
+  static void _handleNavigateAction(BDUIActionData action, BuildContext context) {
+    final screen = action.screen;
+    final challengeId = action.challengeId;
     
     print('🧭 Навигация на: $screen, challenge: $challengeId');
     
-    if (screen == 'challenge_detail' && challengeId != null) {
-      // Используй свою навигацию здесь
+    if (screen == BDUIScreenType.challengeDetail && challengeId != null) {
       NavigationService.navigateToChallengeDetail(challengeId);
     }
   }
 
-   static Widget _renderNumberInput(Map<String, dynamic> json) {
-    final key = json['key'] as String? ?? 'number_${DateTime.now().millisecondsSinceEpoch}';
-    
-    _textControllers[key] ??= TextEditingController(
-      text: json['value']?.toString() ?? ''
-    );
-
-    return TextFormField(
-      controller: _textControllers[key]!,
-      keyboardType: TextInputType.numberWithOptions(decimal: json['decimal'] == true),
-      decoration: InputDecoration(
-        labelText: json['label'],
-        hintText: json['placeholder'],
-        border: const OutlineInputBorder(),
-        prefixText: json['prefix'] as String?,
-        suffixText: json['suffix'] as String?,
-        prefixIcon: const Icon(Icons.numbers),
-      ),
-      validator: (value) {
-        if (json['required'] == true && (value == null || value.isEmpty)) {
-          return 'Обязательное поле';
-        }
-        if (value != null && value.isNotEmpty) {
-          final number = double.tryParse(value);
-          if (number == null) return 'Введите число';
-          if (json['min'] != null && number < (json['min'] as num).toDouble()) {
-            return 'Минимум: ${json['min']}';
-          }
-          if (json['max'] != null && number > (json['max'] as num).toDouble()) {
-            return 'Максимум: ${json['max']}';
-          }
-        }
-        return null;
-      },
-    );
-  }
-
-
-  static void _handleTrackProgress(Map<String, dynamic> action, BuildContext context, VoidCallback? onDataUpdated) async {
+  static void _handleTrackProgress(BDUIActionData action, BuildContext context, VoidCallback? onDataUpdated) async {
     try {
-      final challengeId = action['challenge_id'];
+      final challengeId = action.challengeId;
       double progress;
 
-      if (action.containsKey('progress')) {
-        progress = (action['progress'] as num).toDouble();
-      } else if (action.containsKey('progress_key')) {
-        final fieldKey = action['progress_key'];
-        final controller = _textControllers[fieldKey];
-        if (controller != null && controller.text.isNotEmpty) {
-          progress = double.tryParse(controller.text) ?? 0.0;
-        } else {
-          throw Exception('Поле прогресса пустое');
-        }
-      } else {
-        throw Exception('Не указан источник данных для прогресса');
-      }
+      // if (action.progress != null) {
+      //   progress = action.progress!.toDouble();
+      // } else if (action.progressKey != null) {
+      //   final controller = _textControllers[action.progressKey!];
+      //   if (controller != null && controller.text.isNotEmpty) {
+      //     progress = double.tryParse(controller.text) ?? 0.0;
+      //   } else {
+      //     throw Exception('Поле прогресса пустое');
+      //   }
+      // } else {
+      //   throw Exception('Не указан источник данных для прогресса');
+      // }
 
-      print('💾 Сохранение прогресса: $progress для челленджа $challengeId');
+ //     print('💾 Сохранение прогресса: $progress для челленджа $challengeId');
 
       final scaffoldMessenger = ScaffoldMessenger.of(context);
       scaffoldMessenger.showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Row(
             children: [
               CircularProgressIndicator(color: Colors.white),
@@ -424,12 +410,12 @@ class BDUIEngine {
         ),
       );
 
-      final success = await _saveProgressToAPI(challengeId, progress);
+      final success = await _saveProgressToAPI(challengeId!, 10);//progress);
       scaffoldMessenger.hideCurrentSnackBar();
 
       if (success) {
         scaffoldMessenger.showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('✅ Прогресс успешно сохранен!'),
             backgroundColor: Colors.green,
           ),
@@ -442,7 +428,7 @@ class BDUIEngine {
 
       } else {
         scaffoldMessenger.showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('❌ Ошибка сохранения прогресса'),
             backgroundColor: Colors.red,
           ),
@@ -481,20 +467,20 @@ class BDUIEngine {
     _textControllers.clear();
   }
 
-  static EdgeInsets? _parseEdgeInsets(dynamic padding) {
-    if (padding is Map<String, dynamic>) {
+  static EdgeInsets? _parseBDUIPadding(BDUIPadding? padding) {
+    if (padding != null) {
       return EdgeInsets.only(
-        left: (padding['left'] as num?)?.toDouble() ?? 0,
-        top: (padding['top'] as num?)?.toDouble() ?? 0,
-        right: (padding['right'] as num?)?.toDouble() ?? 0,
-        bottom: (padding['bottom'] as num?)?.toDouble() ?? 0,
+        left: padding.left?.toDouble() ?? 0.0,
+        top: padding.top?.toDouble() ?? 0.0,
+        right: padding.right?.toDouble() ?? 0.0,
+        bottom: padding.bottom?.toDouble() ?? 0.0,
       );
     }
     return null;
   }
 
-  static Color? _parseColor(dynamic color) {
-    if (color is String) {
+  static Color? _parseColor(String? color) {
+    if (color != null) {
       try {
         return Color(int.parse(color.replaceFirst('#', '0xff')));
       } catch (e) {
@@ -502,6 +488,16 @@ class BDUIEngine {
       }
     }
     return null;
+  }
+
+  static FontWeight _parseFontWeight(BDUIFontWeight? fontWeight) {
+    switch (fontWeight) {
+      case BDUIFontWeight.bold:
+        return FontWeight.bold;
+      case BDUIFontWeight.normal:
+      default:
+        return FontWeight.normal;
+    }
   }
 
   static Widget _buildErrorWidget(String message) {

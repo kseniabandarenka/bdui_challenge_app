@@ -14,12 +14,12 @@ BDUICardActionModel _$BDUICardActionModelFromJson(Map<String, dynamic> json) =>
     );
 
 Map<String, dynamic> _$BDUICardActionModelToJson(
-  BDUICardActionModel instance,
-) => <String, dynamic>{
-  'type': _$BDUIActionTypeEnumMap[instance.type]!,
-  'screen': _$BDUIScreenTypeEnumMap[instance.screen]!,
-  'challenge_id': instance.challengeId,
-};
+        BDUICardActionModel instance) =>
+    <String, dynamic>{
+      'type': _$BDUIActionTypeEnumMap[instance.type]!,
+      'screen': _$BDUIScreenTypeEnumMap[instance.screen]!,
+      'challenge_id': instance.challengeId,
+    };
 
 const _$BDUIActionTypeEnumMap = {
   BDUIActionType.navigate: 'navigate',

@@ -89,14 +89,5 @@ class ChallengeCardRenderer {
         [];
   }
 
-  static Widget _buildErrorWidget(String message) {
-    return Container(
-      padding: const EdgeInsets.all(8),
-      color: Colors.red[50],
-      child: Text(
-        message,
-        style: const TextStyle(color: Colors.red, fontSize: 12),
-      ),
-    );
-  }
+
 }
