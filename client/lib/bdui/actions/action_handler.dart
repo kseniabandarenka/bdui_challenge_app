@@ -1,55 +1,81 @@
+import 'dart:convert';
 import 'package:client/bdui/engine/engine.dart';
 import 'package:client/navigation/navigation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
-
 import 'package:shared/shared.dart';
+import 'package:client/bdui/utils/controllers_manager.dart';
 
-class BDUIActionService {
-  static final Map<String, TextEditingController> _textControllers = {};
+class ActionHandler {
+  final ControllersManager controllersManager;
 
-  static void handleAction(dynamic action, BuildContext context, VoidCallback? onDataUpdated) {
-    if (action is! Map<String, dynamic>) return;
-    
+  ActionHandler({required this.controllersManager});
+
+  void handleAction(
+    BDUIActionData? action,
+    BuildContext context,
+    VoidCallback? onDataUpdated,
+  ) {
+    if (action == null) {
+      print('Действие не указано');
+      return;
+    }
+
     try {
-      final actionData = BDUIActionData.fromJson(action);
-      
-      switch (actionData.type) {
+      switch (action.type) {
         case BDUIActionType.navigate:
-          _handleNavigateAction(actionData, context);
+          _handleNavigateAction(action, context);
           break;
         case BDUIActionType.trackProgress:
-          _handleTrackProgressAction(actionData, context, onDataUpdated);
+          _handleTrackProgress(action, context, onDataUpdated);
           break;
         case BDUIActionType.showBottomSheet:
-          _handleShowBottomSheetAction(actionData, context, onDataUpdated);
+          _handleShowBottomSheet(action, context, onDataUpdated);
           break;
+        default:
+          print('⚠️ Необработанное действие: ${action.type}');
       }
     } catch (e) {
-      print('Ошибка обработки действия: $e');
+      print('❌ Ошибка обработки действия: $e');
+      _showErrorSnackbar(context, 'Ошибка выполнения действия: $e');
     }
   }
 
-  static void _handleNavigateAction(BDUIActionData action, BuildContext context) {
+  void handleActions(
+    List<BDUIActionModel>? actions,
+    BuildContext context,
+    VoidCallback? onDataUpdated,
+  ) {
+    if (actions != null && actions.isNotEmpty) {
+      handleAction(actions.first.action, context, onDataUpdated);
+    }
+  }
+
+  // 📍 МЕТОДЫ ОБРАБОТКИ ДЕЙСТВИЙ
+
+  void _handleNavigateAction(BDUIActionData action, BuildContext context) {
     final screen = action.screen;
     final challengeId = action.challengeId;
-    
+
     print('🧭 Навигация на: $screen, challenge: $challengeId');
-    
-    if (screen == 'challenge_detail' && challengeId != null) {
-       NavigationService.navigateToChallengeDetail(challengeId);
+
+    if (screen == BDUIScreenType.challengeDetail && challengeId != null) {
+      NavigationService.navigateToChallengeDetail(challengeId);
     }
   }
 
-  static void _handleTrackProgressAction(BDUIActionData action, BuildContext context, VoidCallback? onDataUpdated) async {
+  void _handleTrackProgress(
+    BDUIActionData action,
+    BuildContext context,
+    VoidCallback? onDataUpdated,
+  ) async {
     try {
       final challengeId = action.challengeId;
       double progress;
 
       if (action.progressKey != null) {
-        final fieldKey = action.progressKey!;
-        final controller = _textControllers[fieldKey];
+        final controller =
+            controllersManager.getControllerByKey(action.progressKey!);
         if (controller != null && controller.text.isNotEmpty) {
           progress = double.tryParse(controller.text) ?? 0.0;
         } else {
@@ -87,6 +113,8 @@ class BDUIActionService {
         );
 
         Navigator.of(context).pop();
+
+        // 🔄 ВЫЗЫВАЕМ CALLBACK ДЛЯ ОБНОВЛЕНИЯ ДАННЫХ
         onDataUpdated?.call();
       } else {
         scaffoldMessenger.showSnackBar(
@@ -107,22 +135,35 @@ class BDUIActionService {
     }
   }
 
-  static void _handleShowBottomSheetAction(BDUIActionData action, BuildContext context, VoidCallback? onDataUpdated) {
-    final sheet = action.sheet;
-    if (sheet != null) {
-      _showCustomBottomSheet(sheet, context, onDataUpdated);
+  void _handleShowBottomSheet(
+    BDUIActionData action,
+    BuildContext context,
+    VoidCallback? onDataUpdated,
+  ) {
+    final sheetData = action.sheet;
+    if (sheetData != null) {
+      _showCustomBottomSheet(sheetData, context, onDataUpdated);
     }
   }
 
-  static void _showCustomBottomSheet(BDUIElementModel sheet, BuildContext context, VoidCallback? onDataUpdated) {
+  void _showCustomBottomSheet(
+    BDUIElementModel sheetData,
+    BuildContext context,
+    VoidCallback? onDataUpdated,
+  ) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      builder: (context) => _buildBottomSheetContent(sheet, context, onDataUpdated),
+      builder: (context) =>
+          _buildBottomSheetContent(sheetData, context, onDataUpdated),
     );
   }
 
-  static Widget _buildBottomSheetContent(BDUIElementModel data, BuildContext context, VoidCallback? onDataUpdated) {
+  Widget _buildBottomSheetContent(
+    BDUIElementModel data,
+    BuildContext context,
+    VoidCallback? onDataUpdated,
+  ) {
     return SingleChildScrollView(
       padding: EdgeInsets.only(
         bottom: MediaQuery.of(context).viewInsets.bottom,
@@ -132,13 +173,17 @@ class BDUIActionService {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text(
-              'Отметить прогресс',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 20),
-            BDUIEngine.renderFromJson(
-              json: data.toJson(), 
+            if (data.value != null) ...[
+              Text(
+                data.value!,
+                style:
+                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 20),
+            ],
+            // Используем BDUIEngine для рендеринга контента bottom sheet
+            BDUIEngine.renderBDUIModel(
+              model: data,
               context: context,
               onDataUpdated: onDataUpdated,
             ),
@@ -148,7 +193,7 @@ class BDUIActionService {
     );
   }
 
-  static Future<bool> _saveProgressToAPI(String challengeId, double progress) async {
+  Future<bool> _saveProgressToAPI(String challengeId, double progress) async {
     try {
       final response = await http.post(
         Uri.parse('http://localhost:8080/api/challenges/$challengeId/progress'),
@@ -157,20 +202,17 @@ class BDUIActionService {
       );
       return response.statusCode == 200;
     } catch (e) {
-      print('❌ API Error: $e');
+      print('API Error: $e');
       return false;
     }
   }
 
-  static TextEditingController getTextController(String key, String defaultValue) {
-    _textControllers[key] ??= TextEditingController(text: defaultValue);
-    return _textControllers[key]!;
-  }
-
-  static void dispose() {
-    for (final controller in _textControllers.values) {
-      controller.dispose();
-    }
-    _textControllers.clear();
+  void _showErrorSnackbar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.red,
+      ),
+    );
   }
 }

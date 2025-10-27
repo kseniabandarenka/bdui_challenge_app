@@ -34,6 +34,5 @@ class BDUIElementModel {
   factory BDUIElementModel.fromJson(Map<String, dynamic> json) =>
       _$BDUIElementModelFromJson(json);
 
-  @override
   Map<String, dynamic> toJson() => _$BDUIElementModelToJson(this);
 }
