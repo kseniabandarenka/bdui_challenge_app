@@ -9,6 +9,7 @@ part of 'bdui_element_model.dart';
 BDUIElementModel _$BDUIElementModelFromJson(Map<String, dynamic> json) =>
     BDUIElementModel(
       type: $enumDecode(_$BDUITypeEnumMap, json['type']),
+      key: json['key'] as String?,
       children: (json['children'] as List<dynamic>?)
           ?.map((e) => BDUIElementModel.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -34,6 +35,7 @@ BDUIElementModel _$BDUIElementModelFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$BDUIElementModelToJson(BDUIElementModel instance) =>
     <String, dynamic>{
+      'key': instance.key,
       'type': _$BDUITypeEnumMap[instance.type]!,
       'value': instance.value,
       'style': instance.style,

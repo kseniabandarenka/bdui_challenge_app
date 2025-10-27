@@ -60,11 +60,7 @@ class ChallengeCardRenderer {
                     onDataUpdated,
                   ),
                 ],
-                if (model.actions != null && model.actions!.isNotEmpty) ...[
-                  const SizedBox(height: 12),
-                  ..._renderChildren(model.actions!, context, onDataUpdated),
                 ],
-              ],
             ),
           ),
         ),

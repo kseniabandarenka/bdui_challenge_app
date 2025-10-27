@@ -1,8 +1,6 @@
 import 'dart:convert';
-import 'package:client/bdui/models/action_type.dart';
 import 'package:client/navigation/navigation_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared/shared.dart';
 
@@ -16,13 +14,10 @@ class BDUIEngine {
     VoidCallback? onDataUpdated,
   }) {
     final model = BDUIScreenModel.fromJson(json);
-    
+
     return renderBDUIModel(
-      model: model.layout, 
-      context: context, 
-      onDataUpdated: onDataUpdated
-    );
-  } 
+        model: model.layout, context: context, onDataUpdated: onDataUpdated);
+  }
 
   static Widget renderBDUIModel({
     required BDUIElementModel model,
@@ -31,7 +26,7 @@ class BDUIEngine {
   }) {
     try {
       final type = model.type;
-      
+
       switch (type) {
         case BDUIType.column:
           return _renderColumn(model, context, onDataUpdated);
@@ -46,7 +41,8 @@ class BDUIEngine {
         case BDUIType.progressBar:
           return _renderProgressBar(model);
         case BDUIType.challengeCard:
-          return _renderChallengeCard(model, context, onDataUpdated);
+          return _renderChallengeCard(
+              model as BDUIChallengeCardModel, context, onDataUpdated);
         case BDUIType.challengeList:
           return _renderChallengeList(model, context, onDataUpdated);
         case BDUIType.textField:
@@ -61,39 +57,44 @@ class BDUIEngine {
 
   // 📦 МЕТОДЫ РЕНДЕРИНГА
 
-  static Widget _renderColumn(BDUIElementModel model, BuildContext context, VoidCallback? onDataUpdated) {
+  static Widget _renderColumn(BDUIElementModel model, BuildContext context,
+      VoidCallback? onDataUpdated) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: _renderChildren(model.children, context, onDataUpdated),
     );
   }
 
-  static Widget _renderContainer(BDUIElementModel model, BuildContext context, VoidCallback? onDataUpdated) {
+  static Widget _renderContainer(BDUIElementModel model, BuildContext context,
+      VoidCallback? onDataUpdated) {
     return Container(
       decoration: BoxDecoration(
         color: _parseColor(model.decoration?.color),
-        borderRadius: model.decoration?.borderRadius != null 
-            ? BorderRadius.circular(model.decoration!.borderRadius!.all?.toDouble() ?? 0)
+        borderRadius: model.decoration?.borderRadius != null
+            ? BorderRadius.circular(
+                model.decoration!.borderRadius!.all?.toDouble() ?? 0)
             : null,
       ),
       padding: _parseBDUIPadding(model.decoration?.padding),
       margin: _parseBDUIPadding(model.decoration?.margin),
-      child: model.child != null 
+      child: model.child != null
           ? renderBDUIModel(
-              model: model.child!, 
+              model: model.child!,
               context: context,
               onDataUpdated: onDataUpdated,
             )
-          : (model.children != null 
+          : (model.children != null
               ? Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: _renderChildren(model.children!, context, onDataUpdated),
+                  children:
+                      _renderChildren(model.children!, context, onDataUpdated),
                 )
               : null),
     );
   }
 
-  static Widget _renderRow(BDUIElementModel model, BuildContext context, VoidCallback? onDataUpdated) {
+  static Widget _renderRow(BDUIElementModel model, BuildContext context,
+      VoidCallback? onDataUpdated) {
     return Row(
       children: _renderChildren(model.children, context, onDataUpdated),
     );
@@ -110,7 +111,8 @@ class BDUIEngine {
     );
   }
 
-  static Widget _renderButton(BDUIElementModel model, BuildContext context, VoidCallback? onDataUpdated) {
+  static Widget _renderButton(BDUIElementModel model, BuildContext context,
+      VoidCallback? onDataUpdated) {
     return Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -118,7 +120,8 @@ class BDUIEngine {
           children: [
             Expanded(
               child: ElevatedButton(
-                onPressed: () => _handleActions(model.actions, context, onDataUpdated),
+                onPressed: () =>
+                    _handleActions(model.actions, context, onDataUpdated),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: _parseColor(model.decoration?.color),
                   foregroundColor: _parseColor(model.style?.color),
@@ -156,13 +159,9 @@ class BDUIEngine {
     );
   }
 
-  static Widget _renderTextField(BDUIElementModel model) {
-    final key = model.value ?? 'field_${DateTime.now().millisecondsSinceEpoch}';
-    
-    _textControllers[key] ??= TextEditingController(
-      text: model.value ?? ''
-    );
-    
+static Widget _renderTextField(BDUIElementModel model) {
+    final key = model.key ?? 'field_${DateTime.now().millisecondsSinceEpoch}';
+    _textControllers[key] ??= TextEditingController(text: model.value ?? '');
     return TextField(
       controller: _textControllers[key]!,
       keyboardType: TextInputType.text,
@@ -174,10 +173,36 @@ class BDUIEngine {
     );
   }
 
-  static Widget _renderChallengeCard(BDUIChallengeCardModel model, BuildContext context, VoidCallback? onDataUpdated) {
+  static Widget _renderNumberInput(BDUIElementModel model) {
+    final key = model.key ?? 'number_${DateTime.now().millisecondsSinceEpoch}';
+    _textControllers[key] ??= TextEditingController(text: model.value ?? '');
+    return TextFormField(
+      controller: _textControllers[key]!,
+      keyboardType: const TextInputType.numberWithOptions(decimal: true),
+      decoration: InputDecoration(
+        labelText: model.value,
+        hintText: model.value,
+        border: const OutlineInputBorder(),
+        prefixIcon: const Icon(Icons.numbers),
+      ),
+      validator: (value) {
+        // if ((model.requiredField ?? false) &&
+        //     (value == null || value.isEmpty)) {
+        //   return 'Обязательное поле';
+        // }
+        if (value != null && value.isNotEmpty) {
+          final number = double.tryParse(value);
+          if (number == null) return 'Введите число';
+        }
+        return null;
+      },
+    );
+  }
+  static Widget _renderChallengeCard(BDUIChallengeCardModel model,
+      BuildContext context, VoidCallback? onDataUpdated) {
     return GestureDetector(
       onTap: () {
-        _handleActions([model.action], context, onDataUpdated);
+        _handleAction(model.action, context, onDataUpdated);
       },
       child: Card(
         margin: const EdgeInsets.all(8),
@@ -189,38 +214,37 @@ class BDUIEngine {
               Row(
                 children: [
                   Text(
-                    model.value ?? '🎯',
+                    model.category ?? '🎯',
                     style: const TextStyle(fontSize: 14, color: Colors.grey),
                   ),
                   const Spacer(),
-                  if (model.challenges?.isNotEmpty == true && model.challenges!.first.completed == true)
-                    const Icon(Icons.check_circle, color: Colors.green, size: 20),
+                  if (model.completed == true)
+                    const Icon(Icons.check_circle,
+                        color: Colors.green, size: 20),
                 ],
               ),
               const SizedBox(height: 8),
               Text(
-                model.value ?? 'Без названия',
-                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                model.title ?? 'Без названия',
+                style:
+                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              if (model.challenges?.isNotEmpty == true && model.challenges!.first.description != null) ...[
+              if (model.description != null) ...[
                 const SizedBox(height: 8),
                 Text(
-                  model.challenges!.first.description!,
+                  model.description!,
                   style: TextStyle(color: Colors.grey[600]),
                 ),
               ],
-              if (model.challenges?.isNotEmpty == true && 
-                  model.challenges!.first.progressCurrent != null && 
-                  model.challenges!.first.progressTotal != null) ...[
+              if (model.progressCurrent != null &&
+                  model.progressTotal != null) ...[
                 const SizedBox(height: 12),
-                _renderProgressBar(BDUIElementModel(
-                  type: BDUIType.progressBar,
-                  value: '${model.challenges!.first.progressCurrent}/${model.challenges!.first.progressTotal}',
-                )),
-              ],
-              if (model.actions != null) ...[
-                const SizedBox(height: 12),
-                ..._renderActions(model.actions!, context, onDataUpdated),
+                _renderProgressBar(
+                  BDUIElementModel(
+                    type: BDUIType.progressBar,
+                    value: "${model.progressCurrent}/${model.progressTotal}",
+                  ),
+                ),
               ],
             ],
           ),
@@ -229,58 +253,57 @@ class BDUIEngine {
     );
   }
 
-  static Widget _renderChallengeList(BDUIElementModel model, BuildContext context, VoidCallback? onDataUpdated) {
+  static Widget _renderChallengeList(BDUIElementModel model,
+      BuildContext context, VoidCallback? onDataUpdated) {
     return Column(
       children: model.challenges?.map((challenge) {
-        return _renderChallengeCard(BDUIElementModel(
-          type: BDUIType.challengeCard,
-          value: challenge.title,
-          challenges: [challenge],
-          actions: challenge.actions,
-        ), context, onDataUpdated);
-      }).toList() ?? [],
+            return _renderChallengeCard(challenge, context, onDataUpdated);
+          }).toList() ??
+          [],
     );
   }
 
-  static Widget _renderNumberInput(BDUIElementModel model) {
-    final key = model.value ?? 'number_${DateTime.now().millisecondsSinceEpoch}';
-    
-    _textControllers[key] ??= TextEditingController(
-      text: model.value ?? ''
-    );
+  // static Widget _renderNumberInput(BDUIElementModel model) {
+  //   final key =
+  //       model.value ?? 'number_${DateTime.now().millisecondsSinceEpoch}';
 
-    return TextFormField(
-      controller: _textControllers[key]!,
-      keyboardType: TextInputType.numberWithOptions(decimal: true),
-      decoration: InputDecoration(
-        labelText: model.value,
-        hintText: model.value,
-        border: const OutlineInputBorder(),
-        prefixIcon: const Icon(Icons.numbers),
-      ),
-      validator: (value) {
-        if (value != null && value.isNotEmpty) {
-          final number = double.tryParse(value);
-          if (number == null) return 'Введите число';
-        }
-        return null;
-      },
-    );
-  }
+  //   _textControllers[key] ??= TextEditingController(text: model.value ?? '');
+
+  //   return TextFormField(
+  //     controller: _textControllers[key]!,
+  //     keyboardType: const TextInputType.numberWithOptions(decimal: true),
+  //     decoration: InputDecoration(
+  //       labelText: model.value,
+  //       hintText: model.value,
+  //       border: const OutlineInputBorder(),
+  //       prefixIcon: const Icon(Icons.numbers),
+  //     ),
+  //     validator: (value) {
+  //       if (value != null && value.isNotEmpty) {
+  //         final number = double.tryParse(value);
+  //         if (number == null) return 'Введите число';
+  //       }
+  //       return null;
+  //     },
+  //   );
+  // }
 
   // 🛠️ ВСПОМОГАТЕЛЬНЫЕ МЕТОДЫ
 
-  static List<Widget> _renderChildren(List<BDUIElementModel>? children, BuildContext context, VoidCallback? onDataUpdated) {
+  static List<Widget> _renderChildren(List<BDUIElementModel>? children,
+      BuildContext context, VoidCallback? onDataUpdated) {
     return children?.map((child) {
-      return renderBDUIModel(
-        model: child, 
-        context: context,
-        onDataUpdated: onDataUpdated,
-      );
-    }).toList() ?? [];
+          return renderBDUIModel(
+            model: child,
+            context: context,
+            onDataUpdated: onDataUpdated,
+          );
+        }).toList() ??
+        [];
   }
 
-  static List<Widget> _renderActions(List<BDUIActionModel> actions, BuildContext context, VoidCallback? onDataUpdated) {
+  static List<Widget> _renderActions(List<BDUIActionModel> actions,
+      BuildContext context, VoidCallback? onDataUpdated) {
     return actions.map((action) {
       return ElevatedButton(
         onPressed: () => _handleAction(action.action, context, onDataUpdated),
@@ -289,17 +312,17 @@ class BDUIEngine {
     }).toList();
   }
 
-  static void _handleActions(List<BDUIActionModel>? actions, BuildContext context, VoidCallback? onDataUpdated) {
+  static void _handleActions(List<BDUIActionModel>? actions,
+      BuildContext context, VoidCallback? onDataUpdated) {
     if (actions != null && actions.isNotEmpty) {
       _handleAction(actions.first.action, context, onDataUpdated);
     }
   }
 
-  static void _handleAction(BDUIActionData? action, BuildContext context, VoidCallback? onDataUpdated) {
-    print('🔍 BDUI Action received: $action');
-    
+  static void _handleAction(BDUIActionData? action, BuildContext context,
+      VoidCallback? onDataUpdated) {
     if (action == null) {
-      print('⚠️ Действие не указано');
+      print('Действие не указано');
       return;
     }
 
@@ -322,22 +345,26 @@ class BDUIEngine {
     }
   }
 
-  static void _handleShowBottomSheet(BDUIActionData action, BuildContext context, VoidCallback? onDataUpdated) {
+  static void _handleShowBottomSheet(BDUIActionData action,
+      BuildContext context, VoidCallback? onDataUpdated) {
     final sheetData = action.sheet;
     if (sheetData != null) {
       _showCustomBottomSheet(sheetData, context, onDataUpdated);
     }
   }
 
-  static void _showCustomBottomSheet(BDUIElementModel sheetData, BuildContext context, VoidCallback? onDataUpdated) {
+  static void _showCustomBottomSheet(BDUIElementModel sheetData,
+      BuildContext context, VoidCallback? onDataUpdated) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      builder: (context) => _buildBottomSheetContent(sheetData, context, onDataUpdated),
+      builder: (context) =>
+          _buildBottomSheetContent(sheetData, context, onDataUpdated),
     );
   }
 
-  static Widget _buildBottomSheetContent(BDUIElementModel data, BuildContext context, VoidCallback? onDataUpdated) {
+  static Widget _buildBottomSheetContent(BDUIElementModel data,
+      BuildContext context, VoidCallback? onDataUpdated) {
     return SingleChildScrollView(
       padding: EdgeInsets.only(
         bottom: MediaQuery.of(context).viewInsets.bottom,
@@ -350,12 +377,13 @@ class BDUIEngine {
             if (data.value != null) ...[
               Text(
                 data.value!,
-                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style:
+                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 20),
             ],
             renderBDUIModel(
-              model: data, 
+              model: data,
               context: context,
               onDataUpdated: onDataUpdated,
             ),
@@ -365,36 +393,36 @@ class BDUIEngine {
     );
   }
 
-  static void _handleNavigateAction(BDUIActionData action, BuildContext context) {
+  static void _handleNavigateAction(
+      BDUIActionData action, BuildContext context) {
     final screen = action.screen;
     final challengeId = action.challengeId;
-    
+
     print('🧭 Навигация на: $screen, challenge: $challengeId');
-    
+
     if (screen == BDUIScreenType.challengeDetail && challengeId != null) {
       NavigationService.navigateToChallengeDetail(challengeId);
     }
   }
 
-  static void _handleTrackProgress(BDUIActionData action, BuildContext context, VoidCallback? onDataUpdated) async {
+  static void _handleTrackProgress(BDUIActionData action, BuildContext context,
+      VoidCallback? onDataUpdated) async {
     try {
       final challengeId = action.challengeId;
       double progress;
 
-      // if (action.progress != null) {
-      //   progress = action.progress!.toDouble();
-      // } else if (action.progressKey != null) {
-      //   final controller = _textControllers[action.progressKey!];
-      //   if (controller != null && controller.text.isNotEmpty) {
-      //     progress = double.tryParse(controller.text) ?? 0.0;
-      //   } else {
-      //     throw Exception('Поле прогресса пустое');
-      //   }
-      // } else {
-      //   throw Exception('Не указан источник данных для прогресса');
-      // }
+      if (action.progressKey != null) {
+        final controller = _textControllers[action.progressKey!];
+        if (controller != null && controller.text.isNotEmpty) {
+          progress = double.tryParse(controller.text) ?? 0.0;
+        } else {
+          throw Exception('Поле прогресса пустое');
+        }
+      } else {
+        throw Exception('Не указан источник данных для прогресса');
+      }
 
- //     print('💾 Сохранение прогресса: $progress для челленджа $challengeId');
+      print('💾 Сохранение прогресса: $progress для челленджа $challengeId');
 
       final scaffoldMessenger = ScaffoldMessenger.of(context);
       scaffoldMessenger.showSnackBar(
@@ -410,7 +438,7 @@ class BDUIEngine {
         ),
       );
 
-      final success = await _saveProgressToAPI(challengeId!, 10);//progress);
+      final success = await _saveProgressToAPI(challengeId!, progress);
       scaffoldMessenger.hideCurrentSnackBar();
 
       if (success) {
@@ -425,7 +453,6 @@ class BDUIEngine {
 
         // 🔄 ВЫЗЫВАЕМ CALLBACK ДЛЯ ОБНОВЛЕНИЯ ДАННЫХ
         onDataUpdated?.call();
-
       } else {
         scaffoldMessenger.showSnackBar(
           const SnackBar(
@@ -434,7 +461,6 @@ class BDUIEngine {
           ),
         );
       }
-
     } catch (e) {
       print('❌ Ошибка сохранения прогресса: $e');
       ScaffoldMessenger.of(context).showSnackBar(
@@ -446,7 +472,8 @@ class BDUIEngine {
     }
   }
 
-  static Future<bool> _saveProgressToAPI(String challengeId, double progress) async {
+  static Future<bool> _saveProgressToAPI(
+      String challengeId, double progress) async {
     try {
       final response = await http.post(
         Uri.parse('http://localhost:8080/api/challenges/$challengeId/progress'),
@@ -455,7 +482,7 @@ class BDUIEngine {
       );
       return response.statusCode == 200;
     } catch (e) {
-      print('❌ API Error: $e');
+      print('API Error: $e');
       return false;
     }
   }

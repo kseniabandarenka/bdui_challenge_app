@@ -9,6 +9,7 @@ part 'bdui_element_model.g.dart';
 
 @JsonSerializable()
 class BDUIElementModel {
+  final String? key;
   final BDUIType type;
   final String? value;
   final BDUITextStyleModel? style;
@@ -20,7 +21,8 @@ class BDUIElementModel {
 
   BDUIElementModel({
     required this.type,
-   this.children,
+    this.key,
+    this.children,
     this.value,
     this.style,
     this.decoration,

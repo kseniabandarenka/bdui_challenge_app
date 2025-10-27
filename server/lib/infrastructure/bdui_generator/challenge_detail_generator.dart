@@ -1,5 +1,7 @@
 import 'package:shared/shared.dart';
 
+final progressKey = 'progress_input';
+
 class ChallengeDetailBDUIGenerator {
   BDUIScreenModel generate(Challenge challenge) {
     return BDUIScreenModel(
@@ -78,7 +80,8 @@ class ChallengeDetailBDUIGenerator {
         ),
         BDUIElementModel(
           type: BDUIType.text,
-          value: '${challenge.progressCurrent}/${challenge.progressTotal} (${(challenge.progressPercentage * 100).toStringAsFixed(1)}%)',
+          value:
+              '${challenge.progressCurrent}/${challenge.progressTotal} (${(challenge.progressPercentage * 100).toStringAsFixed(1)}%)',
           style: BDUITextStyleModel(
             fontSize: 16,
             fontWeight: BDUIFontWeight.bold,
@@ -108,12 +111,9 @@ class ChallengeDetailBDUIGenerator {
           BDUIActionModel(
             type: BDUIType.button,
             text: '✅ Отметить прогресс',
-            action: 
-              BDUIActionData(
-type: BDUIActionType.showBottomSheet,
-sheet: _buildProgressBottomSheet(challenge)
-              ),
-            
+            action: BDUIActionData(
+                type: BDUIActionType.showBottomSheet,
+                sheet: _buildProgressBottomSheet(challenge)),
           ),
         ],
       ),
@@ -138,6 +138,7 @@ sheet: _buildProgressBottomSheet(challenge)
             padding: BDUIPadding(top: 20, bottom: 20),
           ),
           child: BDUIElementModel(
+            key: progressKey,
             type: BDUIType.textField,
             value: challenge.progressCurrent.toString(),
             // Добавьте нужные поля для text field
@@ -157,11 +158,10 @@ sheet: _buildProgressBottomSheet(challenge)
             BDUIActionModel(
               type: BDUIType.button,
               text: '💾 Сохранить',
-              action:  
-              BDUIActionData(
-type: BDUIActionType.trackProgress,
-challengeId: challenge.id,
-progressKey: 'progress_input',
+              action: BDUIActionData(
+                type: BDUIActionType.trackProgress,
+                challengeId: challenge.id,
+                progressKey: progressKey,
               ),
             ),
           ],

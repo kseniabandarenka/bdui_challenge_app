@@ -15,38 +15,14 @@ BDUIChallengeCardModel _$BDUIChallengeCardModelFromJson(
       completed: json['completed'] as bool,
       isInProgress: json['isInProgress'] as bool,
       progressPercentage: (json['progressPercentage'] as num).toDouble(),
-      action:
-          BDUICardActionModel.fromJson(json['action'] as Map<String, dynamic>),
-      value: json['value'] as String?,
-      style: json['style'] == null
-          ? null
-          : BDUITextStyleModel.fromJson(json['style'] as Map<String, dynamic>),
-      decoration: json['decoration'] == null
-          ? null
-          : BDUIDecorationModel.fromJson(
-              json['decoration'] as Map<String, dynamic>),
-      child: json['child'] == null
-          ? null
-          : BDUIElementModel.fromJson(json['child'] as Map<String, dynamic>),
-      children: (json['children'] as List<dynamic>?)
-          ?.map((e) => BDUIElementModel.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      actions: (json['actions'] as List<dynamic>?)
-          ?.map((e) => BDUIActionModel.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      action: BDUIActionData.fromJson(json['action'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$BDUIChallengeCardModelToJson(
         BDUIChallengeCardModel instance) =>
     <String, dynamic>{
-      'type': _$BDUITypeEnumMap[instance.type]!,
-      'value': instance.value,
-      'style': instance.style,
-      'decoration': instance.decoration,
-      'child': instance.child,
-      'children': instance.children,
-      'actions': instance.actions,
       'id': instance.id,
+      'type': _$BDUITypeEnumMap[instance.type]!,
       'title': instance.title,
       'category': instance.category,
       'description': instance.description,
