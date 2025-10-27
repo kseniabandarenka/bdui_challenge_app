@@ -9,7 +9,7 @@ part of 'bdui_action_model.dart';
 BDUIActionModel _$BDUIActionModelFromJson(Map<String, dynamic> json) =>
     BDUIActionModel(
       type: $enumDecode(_$BDUITypeEnumMap, json['type']),
-      text: json['text'] as String,
+      text: json['text'] as String?,
       action: BDUIActionData.fromJson(json['action'] as Map<String, dynamic>),
     );
 
@@ -21,7 +21,6 @@ Map<String, dynamic> _$BDUIActionModelToJson(BDUIActionModel instance) =>
     };
 
 const _$BDUITypeEnumMap = {
-  BDUIType.screen: 'screen',
   BDUIType.column: 'column',
   BDUIType.container: 'container',
   BDUIType.row: 'row',
@@ -37,7 +36,7 @@ const _$BDUITypeEnumMap = {
 BDUIActionData _$BDUIActionDataFromJson(Map<String, dynamic> json) =>
     BDUIActionData(
       type: $enumDecode(_$BDUIActionTypeEnumMap, json['type']),
-      screen: json['screen'] as String?,
+      screen: $enumDecodeNullable(_$BDUIScreenTypeEnumMap, json['screen']),
       challengeId: json['challengeId'] as String?,
       progressKey: json['progressKey'] as String?,
       url: json['url'] as String?,
@@ -51,7 +50,7 @@ BDUIActionData _$BDUIActionDataFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$BDUIActionDataToJson(BDUIActionData instance) =>
     <String, dynamic>{
       'type': _$BDUIActionTypeEnumMap[instance.type]!,
-      'screen': instance.screen,
+      'screen': _$BDUIScreenTypeEnumMap[instance.screen],
       'challengeId': instance.challengeId,
       'progressKey': instance.progressKey,
       'url': instance.url,
@@ -64,4 +63,11 @@ const _$BDUIActionTypeEnumMap = {
   BDUIActionType.navigate: 'navigate',
   BDUIActionType.showBottomSheet: 'show_bottom_sheet',
   BDUIActionType.trackProgress: 'track_progress',
+};
+
+const _$BDUIScreenTypeEnumMap = {
+  BDUIScreenType.challengesList: 'challenges_list',
+  BDUIScreenType.challengeDetail: 'challenge_detail',
+  BDUIScreenType.profile: 'profile',
+  BDUIScreenType.settings: 'settings',
 };

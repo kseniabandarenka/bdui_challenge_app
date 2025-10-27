@@ -3,10 +3,9 @@ import 'package:shared/shared.dart';
 class HomeScreenBDUIGenerator {
   BDUIScreenModel generate(List<Challenge> challenges) {
     return BDUIScreenModel(
-      type: BDUIType.screen,
       screenType: BDUIScreenType.challengesList,
       title: 'Мои челленджи',
-      layout: BDUILayoutModel(
+      layout: BDUIElementModel(
         type: BDUIType.column,
         children: [
           _buildHeader(challenges),
@@ -17,7 +16,7 @@ class HomeScreenBDUIGenerator {
     );
   }
 
- BDUIElementModel _buildHeader(List<Challenge> challenges) {
+  BDUIElementModel _buildHeader(List<Challenge> challenges) {
     final completedCount = challenges.where((c) => c.completed).length;
     final inProgressCount = challenges.where((c) => c.isInProgress).length;
 
@@ -35,7 +34,8 @@ class HomeScreenBDUIGenerator {
         ),
         BDUIElementModel(
           type: BDUIType.text,
-          value: '✅ Завершено: $completedCount | 🎯 В процессе: $inProgressCount',
+          value:
+              '✅ Завершено: $completedCount | 🎯 В процессе: $inProgressCount',
           style: BDUITextStyleModel(
             fontSize: 16,
             color: '#666666',
@@ -45,9 +45,11 @@ class HomeScreenBDUIGenerator {
     );
   }
 
- BDUIElementModel _buildStats(List<Challenge> challenges) {
-    final totalProgress = challenges.fold(0.0, (sum, c) => sum + c.progressPercentage);
-    final averageProgress = challenges.isNotEmpty ? totalProgress / challenges.length : 0;
+  BDUIElementModel _buildStats(List<Challenge> challenges) {
+    final totalProgress =
+        challenges.fold(0.0, (sum, c) => sum + c.progressPercentage);
+    final averageProgress =
+        challenges.isNotEmpty ? totalProgress / challenges.length : 0;
 
     return BDUIElementModel(
       type: BDUIType.container,
@@ -63,7 +65,8 @@ class HomeScreenBDUIGenerator {
       ),
       child: BDUIElementModel(
         type: BDUIType.text,
-        value: '📊 Общий прогресс: ${(averageProgress * 100).toStringAsFixed(1)}%',
+        value:
+            '📊 Общий прогресс: ${(averageProgress * 100).toStringAsFixed(1)}%',
         style: BDUITextStyleModel(
           fontSize: 14,
           color: '#2E7D32',
@@ -92,11 +95,11 @@ class HomeScreenBDUIGenerator {
       completed: challenge.completed,
       isInProgress: challenge.isInProgress,
       progressPercentage: challenge.progressPercentage,
-      action: BDUICardActionModel(
+      action: BDUIActionData(
         type: BDUIActionType.navigate,
         screen: BDUIScreenType.challengeDetail,
         challengeId: challenge.id,
-      ), actions: [],
+      ),
     );
   }
 }

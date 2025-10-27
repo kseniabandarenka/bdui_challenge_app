@@ -1,11 +1,9 @@
 export 'domain/models/challenge.dart';
 export 'domain/repositories/challenge_repository.dart';
 export 'data/models/challenge_model.dart';
-export 'domain/models/bdui/bdui_schema.dart';
 export 'data/models/bdui/bdui_card_action_model.dart';
 export 'data/models/bdui/bdui_type_model.dart';
 export 'data/models/bdui/bdui_screen_model.dart';
-export 'data/models/bdui/bdui_layout_model.dart';
 export 'data/models/bdui/bdui_element_model.dart';
 export 'data/models/bdui/bdui_action_model.dart';
 export 'data/models/bdui/bdui_challenge_card_model.dart';

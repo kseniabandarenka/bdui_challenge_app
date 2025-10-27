@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:shared/data/models/bdui/bdui_screen_type.dart';
 import 'package:shared/data/models/bdui/bdui_type_model.dart';
 import 'bdui_element_model.dart';
 
@@ -7,7 +8,7 @@ part 'bdui_action_model.g.dart';
 @JsonSerializable()
 class BDUIActionModel {
   final BDUIType type;
-  final String text;
+  final String? text;
   final BDUIActionData action;
 
   BDUIActionModel({
@@ -25,7 +26,7 @@ class BDUIActionModel {
 @JsonSerializable()
 class BDUIActionData {
   final BDUIActionType type;
-  final String? screen;
+  final BDUIScreenType? screen;
   final String? challengeId;
   final String? progressKey;
   final String? url;

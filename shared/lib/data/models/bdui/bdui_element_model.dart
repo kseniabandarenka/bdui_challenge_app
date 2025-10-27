@@ -9,22 +9,24 @@ part 'bdui_element_model.g.dart';
 
 @JsonSerializable()
 class BDUIElementModel {
+  final String? key;
   final BDUIType type;
   final String? value;
   final BDUITextStyleModel? style;
   final BDUIDecorationModel? decoration;
   final BDUIElementModel? child;
-  final List<BDUIElementModel>? children;
   final List<BDUIChallengeCardModel>? challenges;
+  final List<BDUIElementModel>? children;
   final List<BDUIActionModel>? actions;
 
   BDUIElementModel({
     required this.type,
+    this.key,
+    this.children,
     this.value,
     this.style,
     this.decoration,
     this.child,
-    this.children,
     this.challenges,
     this.actions,
   });

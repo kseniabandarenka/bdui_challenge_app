@@ -1,9 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
 enum BDUIType {
-  @JsonValue('screen')
-  screen,
-  
   @JsonValue('column')
   column,
   
