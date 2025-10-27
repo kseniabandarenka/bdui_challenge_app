@@ -1,4 +1,3 @@
-import 'package:client/bdui/error/error_widget.dart';
 import 'package:client/bdui/renders/custom/challenge_renderers.dart';
 import 'package:client/bdui/utils/controllers_manager.dart';
 import 'package:flutter/material.dart';
@@ -62,9 +61,7 @@ class BaseRenderer {
           actionHandler: actionHandler,
         );
 
-      default:
-        return BDUIErrorWidget(message: 'Неизвестный тип: $type');
-    }
+      }
   }
 
   static List<Widget> renderChildren({

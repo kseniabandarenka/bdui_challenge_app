@@ -32,9 +32,7 @@ class ActionHandler {
         case BDUIActionType.showBottomSheet:
           _handleShowBottomSheet(action, context, onDataUpdated);
           break;
-        default:
-          print('⚠️ Необработанное действие: ${action.type}');
-      }
+        }
     } catch (e) {
       print('❌ Ошибка обработки действия: $e');
       _showErrorSnackbar(context, 'Ошибка выполнения действия: $e');

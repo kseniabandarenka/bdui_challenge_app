@@ -1,0 +1,117 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'bdui_decoration_model.dart';
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+BDUIBorderRadius _$BDUIBorderRadiusFromJson(Map<String, dynamic> json) =>
+    BDUIBorderRadius(
+      topLeft: (json['topLeft'] as num?)?.toDouble(),
+      topRight: (json['topRight'] as num?)?.toDouble(),
+      bottomLeft: (json['bottomLeft'] as num?)?.toDouble(),
+      bottomRight: (json['bottomRight'] as num?)?.toDouble(),
+      all: (json['all'] as num?)?.toDouble(),
+    );
+
+Map<String, dynamic> _$BDUIBorderRadiusToJson(BDUIBorderRadius instance) =>
+    <String, dynamic>{
+      'topLeft': instance.topLeft,
+      'topRight': instance.topRight,
+      'bottomLeft': instance.bottomLeft,
+      'bottomRight': instance.bottomRight,
+      'all': instance.all,
+    };
+
+BDUIPadding _$BDUIPaddingFromJson(Map<String, dynamic> json) => BDUIPadding(
+      left: (json['left'] as num?)?.toDouble(),
+      top: (json['top'] as num?)?.toDouble(),
+      right: (json['right'] as num?)?.toDouble(),
+      bottom: (json['bottom'] as num?)?.toDouble(),
+      horizontal: (json['horizontal'] as num?)?.toDouble(),
+      vertical: (json['vertical'] as num?)?.toDouble(),
+      all: (json['all'] as num?)?.toDouble(),
+    );
+
+Map<String, dynamic> _$BDUIPaddingToJson(BDUIPadding instance) =>
+    <String, dynamic>{
+      'left': instance.left,
+      'top': instance.top,
+      'right': instance.right,
+      'bottom': instance.bottom,
+      'horizontal': instance.horizontal,
+      'vertical': instance.vertical,
+      'all': instance.all,
+    };
+
+BDUIBorder _$BDUIBorderFromJson(Map<String, dynamic> json) => BDUIBorder(
+      width: (json['width'] as num?)?.toDouble(),
+      color: json['color'] as String?,
+      style: $enumDecodeNullable(_$BDUIBorderStyleEnumMap, json['style']),
+    );
+
+Map<String, dynamic> _$BDUIBorderToJson(BDUIBorder instance) =>
+    <String, dynamic>{
+      'width': instance.width,
+      'color': instance.color,
+      'style': _$BDUIBorderStyleEnumMap[instance.style],
+    };
+
+const _$BDUIBorderStyleEnumMap = {
+  BDUIBorderStyle.solid: 'solid',
+  BDUIBorderStyle.dashed: 'dashed',
+  BDUIBorderStyle.dotted: 'dotted',
+};
+
+BDUIDecorationModel _$BDUIDecorationModelFromJson(Map<String, dynamic> json) =>
+    BDUIDecorationModel(
+      color: json['color'] as String?,
+      gradient: json['gradient'] as String?,
+      borderRadius: json['borderRadius'] == null
+          ? null
+          : BDUIBorderRadius.fromJson(
+              json['borderRadius'] as Map<String, dynamic>),
+      border: json['border'] == null
+          ? null
+          : BDUIBorder.fromJson(json['border'] as Map<String, dynamic>),
+      padding: json['padding'] == null
+          ? null
+          : BDUIPadding.fromJson(json['padding'] as Map<String, dynamic>),
+      margin: json['margin'] == null
+          ? null
+          : BDUIPadding.fromJson(json['margin'] as Map<String, dynamic>),
+      boxShadow: (json['boxShadow'] as List<dynamic>?)
+          ?.map((e) => BDUIBoxShadow.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$BDUIDecorationModelToJson(
+        BDUIDecorationModel instance) =>
+    <String, dynamic>{
+      'color': instance.color,
+      'gradient': instance.gradient,
+      'borderRadius': instance.borderRadius,
+      'border': instance.border,
+      'padding': instance.padding,
+      'margin': instance.margin,
+      'boxShadow': instance.boxShadow,
+    };
+
+BDUIBoxShadow _$BDUIBoxShadowFromJson(Map<String, dynamic> json) =>
+    BDUIBoxShadow(
+      blurRadius: (json['blurRadius'] as num?)?.toDouble(),
+      spreadRadius: (json['spreadRadius'] as num?)?.toDouble(),
+      offsetX: (json['offsetX'] as num?)?.toDouble(),
+      offsetY: (json['offsetY'] as num?)?.toDouble(),
+      color: json['color'] as String?,
+    );
+
+Map<String, dynamic> _$BDUIBoxShadowToJson(BDUIBoxShadow instance) =>
+    <String, dynamic>{
+      'blurRadius': instance.blurRadius,
+      'spreadRadius': instance.spreadRadius,
+      'offsetX': instance.offsetX,
+      'offsetY': instance.offsetY,
+      'color': instance.color,
+    };

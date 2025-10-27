@@ -55,7 +55,7 @@ class ChallengeRenderers {
               Row(
                 children: [
                   Text(
-                    model.category ?? '🎯',
+                    model.category,
                     style: const TextStyle(fontSize: 14, color: Colors.grey),
                   ),
                   const Spacer(),
@@ -66,7 +66,7 @@ class ChallengeRenderers {
               ),
               const SizedBox(height: 8),
               Text(
-                model.title ?? 'Без названия',
+                model.title,
                 style:
                     const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
