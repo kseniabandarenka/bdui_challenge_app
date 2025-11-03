@@ -1,10 +1,10 @@
 import 'dart:convert';
-import 'package:client/bdui/engine/engine.dart';
-import 'package:client/navigation/navigation_service.dart';
+import 'package:client/presentation/bdui/engine/engine.dart';
+import 'package:client/presentation/navigation/navigation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared/shared.dart';
-import 'package:client/bdui/utils/controllers_manager.dart';
+import 'package:client/presentation/bdui/utils/controllers_manager.dart';
 
 class ActionHandler {
   final ControllersManager controllersManager;

@@ -1,5 +1,5 @@
 // client/lib/navigation/navigation_service.dart
-import 'package:client/screen/challenge_detail_screen.dart';
+import 'package:client/presentation/screen/challenge_detail_screen/challenge_detail_screen.dart';
 import 'package:flutter/material.dart';
 
 class NavigationService {

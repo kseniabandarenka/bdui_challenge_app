@@ -1,5 +1,5 @@
 import 'package:client/client.dart';
-import 'package:client/navigation/navigation_service.dart';
+import 'package:client/presentation/navigation/navigation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';

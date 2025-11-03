@@ -1,7 +1,7 @@
-import 'package:client/bdui/renders/base_renderer.dart';
-import 'package:client/bdui/utils/controllers_manager.dart';
-import 'package:client/bdui/actions/action_handler.dart';
-import 'package:client/bdui/utils/parsers.dart';
+import 'package:client/presentation/bdui/renders/base_renderer.dart';
+import 'package:client/presentation/bdui/utils/controllers_manager.dart';
+import 'package:client/presentation/bdui/actions/action_handler.dart';
+import 'package:client/presentation/bdui/utils/parsers.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/shared.dart';
 

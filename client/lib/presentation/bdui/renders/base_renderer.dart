@@ -1,5 +1,5 @@
-import 'package:client/bdui/renders/custom/challenge_renderers.dart';
-import 'package:client/bdui/utils/controllers_manager.dart';
+import 'package:client/presentation/bdui/renders/custom/challenge_renderers.dart';
+import 'package:client/presentation/bdui/utils/controllers_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/shared.dart';
 
