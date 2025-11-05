@@ -1,8 +1,9 @@
-import 'dart:convert';
-import 'package:client/presentation/bdui/engine/engine.dart';
 import 'package:client/presentation/navigation/navigation_service.dart';
+import 'package:client/presentation/pages/progress_bottom_sheet/bloc/progress_bloc.dart';
+import 'package:client/presentation/pages/progress_bottom_sheet/bloc/progress_events.dart';
+import 'package:client/presentation/pages/progress_bottom_sheet/progress_bottom_sheet.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared/shared.dart';
 import 'package:client/presentation/bdui/utils/controllers_manager.dart';
 
@@ -61,70 +62,26 @@ class ActionHandler {
     BDUIActionData action,
     BuildContext context,
     VoidCallback? onDataUpdated,
-  ) async {
-    try {
-      final challengeId = action.challengeId;
-      double progress;
+  ) {
+    final challengeId = action.challengeId;
+    double progress;
 
-      if (action.progressKey != null) {
-        final controller =
-            controllersManager.getControllerByKey(action.progressKey!);
-        if (controller != null && controller.text.isNotEmpty) {
-          progress = double.tryParse(controller.text) ?? 0.0;
-        } else {
-          throw Exception('Поле прогресса пустое');
-        }
+    if (action.progressKey != null) {
+      final controller =
+          controllersManager.getControllerByKey(action.progressKey!);
+      if (controller != null && controller.text.isNotEmpty) {
+        progress = double.tryParse(controller.text) ?? 0.0;
       } else {
-        throw Exception('Не указан источник данных для прогресса');
+        throw Exception('Поле прогресса пустое');
       }
-
-      final scaffoldMessenger = ScaffoldMessenger.of(context);
-      scaffoldMessenger.showSnackBar(
-        const SnackBar(
-          content: Row(
-            children: [
-              CircularProgressIndicator(color: Colors.white),
-              SizedBox(width: 12),
-              Text('Сохранение прогресса...'),
-            ],
-          ),
-          duration: Duration(seconds: 30),
-        ),
-      );
-
-      final success = await _saveProgressToAPI(challengeId!, progress);
-      scaffoldMessenger.hideCurrentSnackBar();
-
-      if (success) {
-        scaffoldMessenger.showSnackBar(
-          const SnackBar(
-            content: Text('✅ Прогресс успешно сохранен!'),
-            backgroundColor: Colors.green,
-          ),
-        );
-
-        // ignore: use_build_context_synchronously
-        Navigator.of(context).pop();
-
-        onDataUpdated?.call();
-      } else {
-        scaffoldMessenger.showSnackBar(
-          const SnackBar(
-            content: Text('Ошибка сохранения прогресса'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-    } catch (e) {
-      print('Ошибка сохранения прогресса: $e');
-      // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Ошибка: $e'),
-          backgroundColor: Colors.red,
-        ),
-      );
+    } else {
+      throw Exception('Не указан источник данных для прогресса');
     }
+
+    // Используем BLoC для сохранения прогресса
+    context.read<ProgressBottomSheetBloc>().add(
+      SubmitProgressEvent(challengeId ?? "", progress),
+    );
   }
 
   void _handleShowBottomSheet(
@@ -133,69 +90,18 @@ class ActionHandler {
     VoidCallback? onDataUpdated,
   ) {
     final sheetData = action.sheet;
-    if (sheetData != null) {
-      _showCustomBottomSheet(sheetData, context, onDataUpdated);
-    }
-  }
-
-  void _showCustomBottomSheet(
-    BDUIElementModel sheetData,
-    BuildContext context,
-    VoidCallback? onDataUpdated,
-  ) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      builder: (context) =>
-          _buildBottomSheetContent(sheetData, context, onDataUpdated),
-    );
-  }
-
-  Widget _buildBottomSheetContent(
-    BDUIElementModel data,
-    BuildContext context,
-    VoidCallback? onDataUpdated,
-  ) {
-    return SingleChildScrollView(
-      padding: EdgeInsets.only(
-        bottom: MediaQuery.of(context).viewInsets.bottom,
-      ),
-      child: Container(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (data.value != null) ...[
-              Text(
-                data.value!,
-                style:
-                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 20),
-            ],
-            // Используем BDUIEngine для рендеринга контента bottom sheet
-            BDUIEngine.renderBDUIModel(
-              model: data,
-              context: context,
-              onDataUpdated: onDataUpdated,
-            ),
-          ],
+    final challengeId = action.challengeId;
+    
+    if (sheetData != null && challengeId != null) {
+      showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        builder: (context) => ProgressBottomSheet(
+          data: sheetData,
+          challengeId: challengeId,
+          onDataUpdated: onDataUpdated,
         ),
-      ),
-    );
-  }
-
-  Future<bool> _saveProgressToAPI(String challengeId, double progress) async {
-    try {
-      final response = await http.post(
-        Uri.parse('http://localhost:8080/api/challenges/$challengeId/progress'),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({'progress': progress}),
       );
-      return response.statusCode == 200;
-    } catch (e) {
-      print('API Error: $e');
-      return false;
     }
   }
 

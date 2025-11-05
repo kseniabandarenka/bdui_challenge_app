@@ -1,12 +1,12 @@
-abstract class ProgressState {}
+abstract class ProgressBottomSheetState {}
 
-class ProgressInitial extends ProgressState {}
+class ProgressBottomSheetInitial extends ProgressBottomSheetState {}
 
-class ProgressLoading extends ProgressState {}
+class ProgressBottomSheetLoading extends ProgressBottomSheetState {}
 
-class ProgressSuccess extends ProgressState {}
+class ProgressBottomSheetSuccess extends ProgressBottomSheetState {}
 
-class ProgressError extends ProgressState {
+class ProgressBottomSheetError extends ProgressBottomSheetState {
   final String message;
-  ProgressError(this.message);
+  ProgressBottomSheetError(this.message);
 }

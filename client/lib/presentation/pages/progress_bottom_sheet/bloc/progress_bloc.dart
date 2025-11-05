@@ -1,30 +1,36 @@
 import 'package:client/domain/use_cases/track_progress_usecase.dart';
+import 'package:client/presentation/pages/progress_bottom_sheet/bloc/progress_events.dart';
+import 'package:client/presentation/pages/progress_bottom_sheet/bloc/progress_states.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'progress_events.dart';
-import 'progress_states.dart';
-
-
-class ProgressBloc extends Bloc<ProgressEvent, ProgressState> {
+class ProgressBottomSheetBloc extends Bloc<ProgressBottomSheetEvent, ProgressBottomSheetState> {
   final TrackProgressUseCase trackProgressUseCase;
 
-  ProgressBloc(this.trackProgressUseCase) : super(ProgressInitial()) {
-    on<SaveProgressEvent>(_onSaveProgress);
+  ProgressBottomSheetBloc(this.trackProgressUseCase) : super(ProgressBottomSheetInitial()) {
+    on<SubmitProgressEvent>(_onSubmitProgress);
+    on<CloseProgressBottomSheetEvent>(_onCloseProgressBottomSheet);
   }
 
-  Future<void> _onSaveProgress(
-    SaveProgressEvent event,
-    Emitter<ProgressState> emit,
+  Future<void> _onSubmitProgress(
+    SubmitProgressEvent event,
+    Emitter<ProgressBottomSheetState> emit,
   ) async {
-    emit(ProgressLoading());
+    emit(ProgressBottomSheetLoading());
     try {
       await trackProgressUseCase.call(
         progress: event.progress,
         id: event.challengeId,
       );
-      emit(ProgressSuccess());
+      emit(ProgressBottomSheetSuccess());
     } catch (e) {
-      emit(ProgressError(e.toString()));
+      emit(ProgressBottomSheetError('Ошибка сохранения: $e'));
     }
+  }
+
+  void _onCloseProgressBottomSheet(
+    CloseProgressBottomSheetEvent event,
+    Emitter<ProgressBottomSheetState> emit,
+  ) {
+    emit(ProgressBottomSheetInitial());
   }
 }

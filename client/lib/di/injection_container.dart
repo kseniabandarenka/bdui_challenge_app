@@ -70,7 +70,7 @@ void _setupBlocs() {
     () => HomeBloc(getIt<GetHomeScreenUseCase>()),
   );
 
-  getIt.registerFactory<ProgressBloc>(
-    () => ProgressBloc(getIt<TrackProgressUseCase>()),
-  );
+getIt.registerFactory<ProgressBottomSheetBloc>(
+  () => ProgressBottomSheetBloc(getIt<TrackProgressUseCase>()),
+);
 }

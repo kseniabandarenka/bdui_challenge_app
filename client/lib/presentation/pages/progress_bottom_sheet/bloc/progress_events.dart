@@ -1,8 +1,10 @@
-abstract class ProgressEvent {}
+abstract class ProgressBottomSheetEvent {}
 
-class SaveProgressEvent extends ProgressEvent {
+class SubmitProgressEvent extends ProgressBottomSheetEvent {
   final String challengeId;
   final double progress;
 
-  SaveProgressEvent(this.challengeId, this.progress);
+  SubmitProgressEvent(this.challengeId, this.progress);
 }
+
+class CloseProgressBottomSheetEvent extends ProgressBottomSheetEvent {}
