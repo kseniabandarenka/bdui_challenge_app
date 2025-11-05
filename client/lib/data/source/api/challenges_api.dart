@@ -2,6 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:shared/shared.dart';
 
+part 'challenges_api.g.dart';
+
 @RestApi()
 abstract class ChallengesApi {
   factory ChallengesApi(Dio dio, {String baseUrl}) = _ChallengesApi;

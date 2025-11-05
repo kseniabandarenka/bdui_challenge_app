@@ -1,5 +1,5 @@
-import 'package:client/presentation/bdui/actions/action_handler.dart';
-import 'package:client/presentation/bdui/renders/basic/basic_renderers.dart';
+import 'package:client/presentation/bdui/engine/actions/action_handler.dart';
+import 'package:client/presentation/bdui/engine/renders/basic/basic_renderers.dart';
 import 'package:client/presentation/bdui/utils/controllers_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:shared/shared.dart';

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:shared/shared.dart';
 
 import '../../actions/action_handler.dart';
-import '../../utils/parsers.dart';
-import '../../utils/controllers_manager.dart';
+import '../../../utils/parsers.dart';
+import '../../../utils/controllers_manager.dart';
 
 class BasicRenderers {
   static Widget render({

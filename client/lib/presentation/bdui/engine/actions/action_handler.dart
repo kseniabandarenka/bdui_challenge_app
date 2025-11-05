@@ -32,9 +32,8 @@ class ActionHandler {
         case BDUIActionType.showBottomSheet:
           _handleShowBottomSheet(action, context, onDataUpdated);
           break;
-        }
+      }
     } catch (e) {
-      print('❌ Ошибка обработки действия: $e');
       _showErrorSnackbar(context, 'Ошибка выполнения действия: $e');
     }
   }
@@ -49,13 +48,9 @@ class ActionHandler {
     }
   }
 
-  // 📍 МЕТОДЫ ОБРАБОТКИ ДЕЙСТВИЙ
-
   void _handleNavigateAction(BDUIActionData action, BuildContext context) {
     final screen = action.screen;
     final challengeId = action.challengeId;
-
-    print('🧭 Навигация на: $screen, challenge: $challengeId');
 
     if (screen == BDUIScreenType.challengeDetail && challengeId != null) {
       NavigationService.navigateToChallengeDetail(challengeId);
@@ -83,8 +78,6 @@ class ActionHandler {
         throw Exception('Не указан источник данных для прогресса');
       }
 
-      print('💾 Сохранение прогресса: $progress для челленджа $challengeId');
-
       final scaffoldMessenger = ScaffoldMessenger.of(context);
       scaffoldMessenger.showSnackBar(
         const SnackBar(
@@ -110,23 +103,24 @@ class ActionHandler {
           ),
         );
 
+        // ignore: use_build_context_synchronously
         Navigator.of(context).pop();
 
-        // 🔄 ВЫЗЫВАЕМ CALLBACK ДЛЯ ОБНОВЛЕНИЯ ДАННЫХ
         onDataUpdated?.call();
       } else {
         scaffoldMessenger.showSnackBar(
           const SnackBar(
-            content: Text('❌ Ошибка сохранения прогресса'),
+            content: Text('Ошибка сохранения прогресса'),
             backgroundColor: Colors.red,
           ),
         );
       }
     } catch (e) {
-      print('❌ Ошибка сохранения прогресса: $e');
+      print('Ошибка сохранения прогресса: $e');
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('❌ Ошибка: $e'),
+          content: Text('Ошибка: $e'),
           backgroundColor: Colors.red,
         ),
       );
