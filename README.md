@@ -32,11 +32,14 @@ The backend drives the client interface by:
 dependencies:
   server:
     path: bdui_challenge_app/server
+```
   
 **For Server Dependencies:**
+```yaml
 dependencies:
   client:
     path: bdui_challenge_app/client
+```
 
 ## Quick Start
 
@@ -54,6 +57,7 @@ dart pub get
 # Client
 cd client 
 flutter pub get
+```
 
 ## Generate Code
 
@@ -65,6 +69,7 @@ dart run build_runner build
 # Client codegen  
 cd client
 flutter pub run build_runner build
+```
 
 ## Run Application
 
@@ -73,11 +78,13 @@ flutter pub run build_runner build
 ```bash
 cd server
 dart run bin/server.dart
+```
 
 ### Start Client
-
+```bash
 cd client
 flutter run
+```
 
 ## Features
 
@@ -115,7 +122,9 @@ void main() async {
   // Start server on localhost:8080
   await server.start(host: 'localhost', port: 8080);
   
-  print(' BDUI Server running on http://localhost:8080')}
+  print(' BDUI Server running on http://localhost:8080')
+  }
+  ```
 
 ## Client Implementation
 
@@ -138,4 +147,7 @@ class BDUIApp extends StatelessWidget {
       title: 'Daily Challenges - BDUI',
       theme: ThemeData(primarySwatch: Colors.blue),
       home: const BDUIHomeScreen(),
-    );}}
+    );
+    }
+  }
+  ```
