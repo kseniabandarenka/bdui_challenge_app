@@ -10,3 +10,4 @@ export 'data/models/bdui/bdui_challenge_card_model.dart';
 export 'data/models/bdui/bdui_screen_type.dart';
 export 'data/models/bdui/bdui_text_style_model.dart';
 export 'data/models/bdui/bdui_decoration_model.dart';
+export 'data/models/progress_request_model.dart';

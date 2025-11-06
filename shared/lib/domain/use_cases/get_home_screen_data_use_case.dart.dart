@@ -10,7 +10,7 @@ class GetHomeScreenDataUseCase {
     final challenges = await repository.getChallenges();
     final activeChallenges = challenges.where((c) => !c.completed).toList();
     final completedCount = challenges.where((c) => c.completed).length;
-    
+
     return HomeScreenData(
       challenges: activeChallenges,
       completedCount: completedCount,

@@ -113,6 +113,7 @@ class ChallengeDetailBDUIGenerator {
             text: '✅ Отметить прогресс',
             action: BDUIActionData(
                 type: BDUIActionType.showBottomSheet,
+                challengeId: challenge.id,
                 sheet: _buildProgressBottomSheet(challenge)),
           ),
         ],

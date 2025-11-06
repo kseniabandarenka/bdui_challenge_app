@@ -21,10 +21,12 @@ class Challenge {
     required this.createdAt,
   });
 
-  double get progressPercentage => progressTotal > 0 ? progressCurrent / progressTotal : 0;
+  double get progressPercentage =>
+      progressTotal > 0 ? progressCurrent / progressTotal : 0;
   bool get isInProgress => progressCurrent > 0 && !completed;
-  bool get isOverdue => !completed && DateTime.now().isAfter(createdAt.add(Duration(days: 1)));
-  
+  bool get isOverdue =>
+      !completed && DateTime.now().isAfter(createdAt.add(Duration(days: 1)));
+
   Challenge updateProgress(double newProgress) {
     return Challenge(
       id: id,
@@ -53,7 +55,7 @@ class ChallengeMapper {
       createdAt: model.createdAt,
     );
   }
-  
+
   static ChallengeModel toModel(Challenge entity) {
     return ChallengeModel(
       id: entity.id,

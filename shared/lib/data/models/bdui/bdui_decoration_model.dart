@@ -56,11 +56,7 @@ class BDUIBorder {
   final String? color;
   final BDUIBorderStyle? style;
 
-  BDUIBorder({
-    this.width,
-    this.color,
-    this.style,
-  });
+  BDUIBorder({this.width, this.color, this.style});
 
   factory BDUIBorder.fromJson(Map<String, dynamic> json) =>
       _$BDUIBorderFromJson(json);
@@ -72,10 +68,10 @@ class BDUIBorder {
 enum BDUIBorderStyle {
   @JsonValue('solid')
   solid,
-  
+
   @JsonValue('dashed')
   dashed,
-  
+
   @JsonValue('dotted')
   dotted,
 }

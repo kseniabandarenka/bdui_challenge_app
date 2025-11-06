@@ -87,7 +87,8 @@ class JsonUtils {
   }
 
   /// Извлекает значение из JSON с проверкой типа
-  static T getValue<T>(Map<String, dynamic> json, String key, [T? defaultValue]) {
+  static T getValue<T>(Map<String, dynamic> json, String key,
+      [T? defaultValue]) {
     if (!json.containsKey(key)) {
       if (defaultValue != null) return defaultValue;
       throw ArgumentError('Field "$key" is required');
@@ -95,12 +96,13 @@ class JsonUtils {
 
     final value = json[key];
     if (value is T) return value;
-    
+
     // Попытка конвертации для числовых типов
     if (T == double && value is int) return value.toDouble() as T;
     if (T == int && value is double) return value.toInt() as T;
     if (T == String && value != null) return value.toString() as T;
-    
-    throw ArgumentError('Field "$key" has invalid type. Expected $T, got ${value.runtimeType}');
+
+    throw ArgumentError(
+        'Field "$key" has invalid type. Expected $T, got ${value.runtimeType}');
   }
 }

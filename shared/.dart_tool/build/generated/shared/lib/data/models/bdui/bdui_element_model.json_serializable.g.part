@@ -34,12 +34,12 @@ Map<String, dynamic> _$BDUIElementModelToJson(BDUIElementModel instance) =>
       'key': instance.key,
       'type': _$BDUITypeEnumMap[instance.type]!,
       'value': instance.value,
-      'style': instance.style,
-      'decoration': instance.decoration,
-      'child': instance.child,
-      'challenges': instance.challenges,
-      'children': instance.children,
-      'actions': instance.actions,
+      'style': instance.style?.toJson(),
+      'decoration': instance.decoration?.toJson(),
+      'child': instance.child?.toJson(),
+      'challenges': instance.challenges?.map((e) => e.toJson()).toList(),
+      'children': instance.children?.map((e) => e.toJson()).toList(),
+      'actions': instance.actions?.map((e) => e.toJson()).toList(),
     };
 
 const _$BDUITypeEnumMap = {
