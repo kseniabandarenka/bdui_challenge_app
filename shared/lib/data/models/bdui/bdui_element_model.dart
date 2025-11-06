@@ -7,7 +7,7 @@ import 'bdui_action_model.dart';
 
 part 'bdui_element_model.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class BDUIElementModel {
   final String? key;
   final BDUIType type;

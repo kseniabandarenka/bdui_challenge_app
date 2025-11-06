@@ -54,10 +54,10 @@ class BDUIActionData {
 enum BDUIActionType {
   @JsonValue('navigate')
   navigate,
-  
+
   @JsonValue('show_bottom_sheet')
   showBottomSheet,
-  
+
   @JsonValue('track_progress')
   trackProgress,
 }

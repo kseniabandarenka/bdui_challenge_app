@@ -71,12 +71,12 @@ class ChallengeDetailScreen extends StatelessWidget {
     if (state is ChallengeLoadedState) {
       return SingleChildScrollView(
         padding: const EdgeInsets.all(16),
-        child: BDUIEngine.renderFromJson(
+        child: BDUIEngine.renderFromScreenModel(
           context: context,
           onDataUpdated: () => context
               .read<ChallengeBloc>()
               .add(LoadChallengeEvent(challengeId)),
-          json: state.challengeData,
+          model: state.challengeData,
         ),
       );
     }

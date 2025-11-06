@@ -1,12 +1,11 @@
 import 'package:shared/shared.dart';
 
 abstract class BDUIGateway {
-
   /// Получить главный экран с челленджами
-  Future<BDUIElementModel> getHomeScreen();
+  Future<BDUIScreenModel> getHomeScreen();
 
   /// Получить детальный экран челленджа
-  /// 
+  ///
   /// [id] - идентификатор челленджа
-  Future<BDUIElementModel> getChallengeDetailScreen(String id);
+  Future<BDUIScreenModel> getChallengeDetailScreen(String id);
 }

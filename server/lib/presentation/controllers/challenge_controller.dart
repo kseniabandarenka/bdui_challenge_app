@@ -1,8 +1,7 @@
-// lib/presentation/controllers/challenge_controller.dart
+import 'package:bdui_server/infrastructure/domain/use_cases/track_progress_use_case.dart';
 import 'package:bdui_server/utils/json_utils.dart';
 import 'package:shared/domain/models/challenge.dart';
 import 'package:shared/domain/repositories/challenge_repository.dart';
-import 'package:shared/domain/use_cases/track_progress_use_case.dart';
 import 'package:shelf/shelf.dart';
 
 class ChallengeController {
@@ -26,24 +25,24 @@ class ChallengeController {
       // Парсим JSON тело запроса
       final body = await request.readAsString();
       final data = JsonUtils.parseJson(body);
-      
+
       // Валидируем обязательные поля
       JsonUtils.validateRequiredFields(data, ['progress']);
-      
+
       // Извлекаем прогресс
-      final progress = JsonUtils.getValue<num>(data, 'progress').toDouble();
-      
+      final progress = JsonUtils.getValue<double>(data, 'progress');
+
       // Вызываем use case
       final updatedChallenge = await trackProgressUseCase.execute(id, progress);
-      
+
       // Возвращаем успешный ответ
       return JsonUtils.jsonSuccess(
         message: 'Прогресс успешно обновлен',
         data: _toChallengeJson(updatedChallenge),
       );
-      
     } on FormatException catch (e) {
-      return JsonUtils.jsonError('Неверный JSON формат: ${e.message}', statusCode: 400);
+      return JsonUtils.jsonError('Неверный JSON формат: ${e.message}',
+          statusCode: 400);
     } on ArgumentError catch (e) {
       return JsonUtils.jsonError(e.message, statusCode: 400);
     } catch (e) {
@@ -52,6 +51,6 @@ class ChallengeController {
   }
 
   Map<String, dynamic> _toChallengeJson(Challenge challenge) {
-    return  ChallengeMapper.toModel(challenge).toJson();
+    return ChallengeMapper.toModel(challenge).toJson();
   }
 }

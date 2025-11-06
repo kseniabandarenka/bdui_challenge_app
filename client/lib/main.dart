@@ -1,6 +1,4 @@
-import 'package:client/di/injection_container.dart';
-import 'package:client/presentation/navigation/navigation_service.dart';
-import 'package:client/presentation/pages/home/home_screen.dart';
+import 'package:client/client.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -25,4 +23,3 @@ class BDUIApp extends StatelessWidget {
     );
   }
 }
-

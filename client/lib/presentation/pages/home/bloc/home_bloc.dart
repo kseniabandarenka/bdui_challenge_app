@@ -16,8 +16,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   ) async {
     emit(HomeLoadingState());
     try {
-      final bduiElement = await getHomeScreenUseCase();
-      emit(HomeLoadedState(bduiElement.toJson()));
+      final bduiElement = await getHomeScreenUseCase.execute();
+      emit(HomeLoadedState(bduiElement));
     } catch (e) {
       emit(HomeErrorState(e.toString()));
     }

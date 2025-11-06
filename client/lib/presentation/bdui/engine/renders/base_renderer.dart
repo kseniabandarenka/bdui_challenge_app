@@ -60,8 +60,7 @@ class BaseRenderer {
           controllersManager: controllersManager,
           actionHandler: actionHandler,
         );
-
-      }
+    }
   }
 
   static List<Widget> renderChildren({

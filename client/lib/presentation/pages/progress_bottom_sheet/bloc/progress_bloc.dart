@@ -3,10 +3,12 @@ import 'package:client/presentation/pages/progress_bottom_sheet/bloc/progress_ev
 import 'package:client/presentation/pages/progress_bottom_sheet/bloc/progress_states.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ProgressBottomSheetBloc extends Bloc<ProgressBottomSheetEvent, ProgressBottomSheetState> {
+class ProgressBottomSheetBloc
+    extends Bloc<ProgressBottomSheetEvent, ProgressBottomSheetState> {
   final TrackProgressUseCase trackProgressUseCase;
 
-  ProgressBottomSheetBloc(this.trackProgressUseCase) : super(ProgressBottomSheetInitial()) {
+  ProgressBottomSheetBloc(this.trackProgressUseCase)
+      : super(ProgressBottomSheetInitial()) {
     on<SubmitProgressEvent>(_onSubmitProgress);
     on<CloseProgressBottomSheetEvent>(_onCloseProgressBottomSheet);
   }
@@ -17,7 +19,7 @@ class ProgressBottomSheetBloc extends Bloc<ProgressBottomSheetEvent, ProgressBot
   ) async {
     emit(ProgressBottomSheetLoading());
     try {
-      await trackProgressUseCase.call(
+      await trackProgressUseCase.execute(
         progress: event.progress,
         id: event.challengeId,
       );

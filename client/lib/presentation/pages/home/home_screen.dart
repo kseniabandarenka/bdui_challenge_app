@@ -68,8 +68,8 @@ class BDUIHomeScreen extends StatelessWidget {
     if (state is HomeLoadedState) {
       return SingleChildScrollView(
         padding: const EdgeInsets.all(16),
-        child: BDUIEngine.renderFromJson(
-          json: state.homeData,
+        child: BDUIEngine.renderFromScreenModel(
+          model: state.homeData,
           context: context,
           onDataUpdated: () => context.read<HomeBloc>().add(LoadHomeEvent()),
         ),

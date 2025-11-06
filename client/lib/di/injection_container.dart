@@ -30,10 +30,10 @@ void _setupHttpClient() {
 
 void _setupApi() {
   getIt.registerFactory<BDUIApi>(
-    () => BDUIApi(getIt<Dio>(), baseUrl: 'http://localhost:8080/api'),
+    () => BDUIApi(getIt<Dio>(), baseUrl: 'http://localhost:8080/api/'),
   );
   getIt.registerFactory<ChallengesApi>(
-    () => ChallengesApi(getIt<Dio>(), baseUrl: 'http://localhost:8080/api'),
+    () => ChallengesApi(getIt<Dio>(), baseUrl: 'http://localhost:8080/api/'),
   );
 }
 
@@ -70,7 +70,7 @@ void _setupBlocs() {
     () => HomeBloc(getIt<GetHomeScreenUseCase>()),
   );
 
-getIt.registerFactory<ProgressBottomSheetBloc>(
-  () => ProgressBottomSheetBloc(getIt<TrackProgressUseCase>()),
-);
+  getIt.registerFactory<ProgressBottomSheetBloc>(
+    () => ProgressBottomSheetBloc(getIt<TrackProgressUseCase>()),
+  );
 }

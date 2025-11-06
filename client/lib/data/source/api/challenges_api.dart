@@ -8,13 +8,12 @@ part 'challenges_api.g.dart';
 abstract class ChallengesApi {
   factory ChallengesApi(Dio dio, {String baseUrl}) = _ChallengesApi;
 
-
   @GET('challenges')
   Future<List<ChallengeModel>> getChallenges();
 
-  @POST('challenges/{id}}/progress')
+  @POST('challenges/{id}/progress')
   Future<void> trackProgress(
-     @Body() double progress, {
+    @Body() ProgressRequestModel progress, {
     @Path('id') required String id,
   });
 }

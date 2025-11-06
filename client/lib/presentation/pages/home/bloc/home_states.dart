@@ -1,3 +1,5 @@
+import 'package:shared/shared.dart';
+
 abstract class HomeState {}
 
 class HomeInitialState extends HomeState {}
@@ -5,7 +7,7 @@ class HomeInitialState extends HomeState {}
 class HomeLoadingState extends HomeState {}
 
 class HomeLoadedState extends HomeState {
-  final Map<String, dynamic> homeData;
+  final BDUIScreenModel homeData;
   HomeLoadedState(this.homeData);
 }
 

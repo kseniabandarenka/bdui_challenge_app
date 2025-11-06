@@ -1,6 +1,6 @@
 import 'package:client/data/source/api/challenges_api.dart';
 import 'package:client/domain/gateway/challenges_gateway.dart';
-import 'package:shared/data/models/challenge_model.dart';
+import 'package:shared/shared.dart';
 
 class ChallengesGatewayImpl implements ChallengesGateway {
   final ChallengesApi api;
@@ -12,7 +12,7 @@ class ChallengesGatewayImpl implements ChallengesGateway {
 
   @override
   Future<void> trackProgress({
-    required double progress,
+    required ProgressRequestModel progress,
     required String id,
   }) =>
       api.trackProgress(progress, id: id);

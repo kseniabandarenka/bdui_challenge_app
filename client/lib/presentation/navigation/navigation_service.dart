@@ -3,7 +3,8 @@ import 'package:client/presentation/pages/challenge_details/challenge_detail_scr
 import 'package:flutter/material.dart';
 
 class NavigationService {
-  static final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+  static final GlobalKey<NavigatorState> navigatorKey =
+      GlobalKey<NavigatorState>();
 
   static Future<void> navigateToChallengeDetail(String challengeId) async {
     navigatorKey.currentState?.push(

@@ -4,7 +4,7 @@ class HomeScreenData {
   final List<Challenge> challenges;
   final int completedCount;
   final int totalCount;
-  
+
   HomeScreenData({
     required this.challenges,
     required this.completedCount,

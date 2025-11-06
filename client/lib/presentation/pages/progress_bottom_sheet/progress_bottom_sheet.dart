@@ -77,7 +77,8 @@ class _ProgressBottomSheetContent extends StatelessWidget {
               if (data.value != null) ...[
                 Text(
                   data.value!,
-                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 20),
               ],

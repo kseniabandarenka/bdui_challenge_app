@@ -1,5 +1,5 @@
 import 'package:client/domain/gateway/bdui_gateway.dart';
-import 'package:shared/data/models/bdui/bdui_element_model.dart';
+import 'package:shared/shared.dart';
 
 /// UseCase для получения детального экрана челленджа
 class GetChallengeDetailScreenUseCase {
@@ -7,6 +7,6 @@ class GetChallengeDetailScreenUseCase {
 
   GetChallengeDetailScreenUseCase(this.gateway);
 
-  Future<BDUIElementModel> call(String id) =>
+  Future<BDUIScreenModel> execute(String id) =>
       gateway.getChallengeDetailScreen(id);
 }

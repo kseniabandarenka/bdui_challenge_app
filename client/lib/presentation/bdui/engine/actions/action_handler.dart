@@ -18,7 +18,6 @@ class ActionHandler {
     VoidCallback? onDataUpdated,
   ) {
     if (action == null) {
-      print('Действие не указано');
       return;
     }
 
@@ -80,8 +79,8 @@ class ActionHandler {
 
     // Используем BLoC для сохранения прогресса
     context.read<ProgressBottomSheetBloc>().add(
-      SubmitProgressEvent(challengeId ?? "", progress),
-    );
+          SubmitProgressEvent(challengeId ?? "", progress),
+        );
   }
 
   void _handleShowBottomSheet(
@@ -91,7 +90,6 @@ class ActionHandler {
   ) {
     final sheetData = action.sheet;
     final challengeId = action.challengeId;
-    
     if (sheetData != null && challengeId != null) {
       showModalBottomSheet(
         context: context,

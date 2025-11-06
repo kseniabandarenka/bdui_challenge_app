@@ -11,13 +11,12 @@ class BDUIEngine {
       ActionHandler(controllersManager: _controllersManager);
 
   // Основной метод рендеринга BDUI JSON
-  static Widget renderFromJson({
-    required Map<String, dynamic> json,
+  static Widget renderFromScreenModel({
+    required BDUIScreenModel model,
     required BuildContext context,
     VoidCallback? onDataUpdated,
   }) {
     try {
-      final model = BDUIScreenModel.fromJson(json);
       return renderBDUIModel(
         model: model.layout,
         context: context,

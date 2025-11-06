@@ -20,8 +20,8 @@ class ChallengeBloc extends Bloc<ChallengeEvent, ChallengeState> {
   ) async {
     emit(ChallengeLoadingState());
     try {
-      final bduiElement = await getChallengeUseCase.call(event.challengeId);
-      emit(ChallengeLoadedState(bduiElement.toJson()));
+      final bduiElement = await getChallengeUseCase.execute(event.challengeId);
+      emit(ChallengeLoadedState(bduiElement));
     } catch (e) {
       emit(ChallengeErrorState(e.toString()));
     }
@@ -32,7 +32,7 @@ class ChallengeBloc extends Bloc<ChallengeEvent, ChallengeState> {
     Emitter<ChallengeState> emit,
   ) async {
     try {
-      await trackProgressUseCase.call(
+      await trackProgressUseCase.execute(
         progress: event.progress,
         id: event.challengeId,
       );

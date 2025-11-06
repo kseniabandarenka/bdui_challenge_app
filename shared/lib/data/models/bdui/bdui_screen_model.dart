@@ -9,11 +9,7 @@ class BDUIScreenModel {
   final String? title;
   final BDUIElementModel layout;
 
-  BDUIScreenModel({
-    required this.screenType,
-    this.title,
-    required this.layout,
-  });
+  BDUIScreenModel({required this.screenType, this.title, required this.layout});
 
   factory BDUIScreenModel.fromJson(Map<String, dynamic> json) =>
       _$BDUIScreenModelFromJson(json);

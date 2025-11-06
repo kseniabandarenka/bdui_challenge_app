@@ -1,3 +1,5 @@
+import 'package:shared/shared.dart';
+
 abstract class ChallengeState {}
 
 class ChallengeInitialState extends ChallengeState {}
@@ -5,7 +7,7 @@ class ChallengeInitialState extends ChallengeState {}
 class ChallengeLoadingState extends ChallengeState {}
 
 class ChallengeLoadedState extends ChallengeState {
-  final Map<String, dynamic> challengeData;
+  final BDUIScreenModel challengeData;
   ChallengeLoadedState(this.challengeData);
 }
 

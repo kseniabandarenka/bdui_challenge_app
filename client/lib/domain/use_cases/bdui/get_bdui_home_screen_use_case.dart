@@ -1,5 +1,5 @@
 import 'package:client/domain/gateway/bdui_gateway.dart';
-import 'package:shared/data/models/bdui/bdui_element_model.dart';
+import 'package:shared/shared.dart';
 
 /// UseCase для получения главного экрана
 class GetHomeScreenUseCase {
@@ -7,5 +7,5 @@ class GetHomeScreenUseCase {
 
   GetHomeScreenUseCase(this.gateway);
 
-  Future<BDUIElementModel> call() => gateway.getHomeScreen();
+  Future<BDUIScreenModel> execute() => gateway.getHomeScreen();
 }

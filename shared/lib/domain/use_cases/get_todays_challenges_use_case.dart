@@ -9,11 +9,12 @@ class GetTodaysChallengesUseCase {
   Future<List<Challenge>> execute() async {
     final challenges = await repository.getChallenges();
     final today = DateTime.now();
-    
+
     return challenges.where((challenge) {
-      final isToday = challenge.createdAt.year == today.year &&
-                     challenge.createdAt.month == today.month &&
-                     challenge.createdAt.day == today.day;
+      final isToday =
+          challenge.createdAt.year == today.year &&
+          challenge.createdAt.month == today.month &&
+          challenge.createdAt.day == today.day;
       return isToday || !challenge.completed;
     }).toList();
   }
