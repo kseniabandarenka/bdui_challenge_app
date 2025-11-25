@@ -1,0 +1,99 @@
+{
+    "screen_type": "challenge_detail",
+    "title": "{{title}}",
+    "layout": {
+        "type": "column",
+        "children": [
+            {
+                "type": "column",
+                "children": [
+                    {
+                        "type": "text",
+                        "value": "{{category}}",
+                        "style": {
+                            "fontSize": 16,
+                            "color": "#666666"
+                        }
+                    },
+                    {
+                        "type": "text",
+                        "value": "{{title}}",
+                        "style": {
+                            "fontSize": 28,
+                            "fontWeight": "bold"
+                        }
+                    }
+                ]
+            },
+            {
+                "type": "container",
+                "decoration": {
+                    "padding": {
+                        "top": 16,
+                        "bottom": 16
+                    }
+                },
+                "child": {
+                    "type": "text",
+                    "value": "{{description}}",
+                    "style": {
+                        "fontSize": 16,
+                        "color": "#424242"
+                    }
+                }
+            },
+            {
+                "type": "column",
+                "children": [
+                    {
+                        "type": "text",
+                        "value": "📊 Ваш прогресс",
+                        "style": {
+                            "fontSize": 20,
+                            "fontWeight": "bold",
+                            "color": "#1976D2"
+                        }
+                    },
+                    {
+                        "type": "progress_bar",
+                        "current": "{{progressCurrent}}",
+                        "total": "{{progressTotal}}"
+                    },
+                    {
+                        "type": "text",
+                        "value": "{{progressCurrent}}/{{progressTotal}} ({{progressPercentage}}%)",
+                        "style": {
+                            "fontSize": 16,
+                            "fontWeight": "bold"
+                        }
+                    }
+                ]
+            },
+            {
+                "type": "container",
+                "decoration": {
+                    "padding": {
+                        "top": 20
+                    }
+                },
+                "child": {
+                    "type": "button",
+                    "text": "✅ Отметить прогресс",
+                    "style": {
+                        "backgroundColor": "#2196F3",
+                        "textColor": "#FFFFFF",
+                        "padding": {
+                            "top": 16,
+                            "bottom": 16
+                        }
+                    },
+                    "action": {
+                        "type": "show_bottom_sheet",
+                        "sheet_template": "progress_form",
+                        "challenge_id": "{{id}}"
+                    }
+                }
+            }
+        ]
+    }
+}
