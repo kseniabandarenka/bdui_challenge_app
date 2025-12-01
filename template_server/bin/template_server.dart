@@ -1,9 +1,6 @@
-import 'package:shelf/shelf.dart';
+import 'package:shelf/shelf.dart' as shelf;
 import 'package:shelf/shelf_io.dart' as io;
-import 'package:shelf_router/shelf_router.dart';
-
-import '../lib/di/dependency_container.dart';
-import '../lib/server/middleware/cors_middleware.dart';
+import 'package:template_server/template_server.dart';
 
 void main() async {
   try {
@@ -11,7 +8,7 @@ void main() async {
     final diContainer = DependencyContainer();
 
     // Middleware pipeline
-    final handler = Pipeline()
+    final handler = shelf.Pipeline()
         .addMiddleware(corsHeaders)
         .addMiddleware(logRequests)
         .addHandler(diContainer.appRouter.router);

@@ -152,6 +152,12 @@
       "languageVersion": "3.4"
     },
     {
+      "name": "http",
+      "rootUri": "file:///Users/bandarenka_ka/.pub-cache/hosted/artifactory.st.by%2547artifactory%2547api%2547pub%2547dart-bybox%2547/http-1.6.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
       "name": "http_multi_server",
       "rootUri": "file:///Users/bandarenka_ka/.pub-cache/hosted/artifactory.st.by%2547artifactory%2547api%2547pub%2547dart-bybox%2547/http_multi_server-3.2.2",
       "packageUri": "lib/",
@@ -359,12 +365,13 @@
       "name": "shared",
       "rootUri": "../",
       "packageUri": "lib/",
-      "languageVersion": "3.8"
+      "languageVersion": "3.0"
     }
   ],
+  "generated": "2025-12-01T13:55:14.488001Z",
   "generator": "pub",
-  "generatorVersion": "3.9.2",
+  "generatorVersion": "3.6.0",
   "flutterRoot": "file:///Users/bandarenka_ka/Documents/frameworks/flutter",
-  "flutterVersion": "3.35.7",
+  "flutterVersion": "3.27.0",
   "pubCache": "file:///Users/bandarenka_ka/.pub-cache"
 }

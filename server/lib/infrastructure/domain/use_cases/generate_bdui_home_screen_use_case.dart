@@ -1,4 +1,3 @@
-// server/application/use_cases/generate_bdui_home_screen_use_case.dart
 import 'package:bdui_server/infrastructure/bdui_generator/home_screen_generator.dart'
     show HomeScreenBDUIGenerator;
 import 'package:shared/domain/repositories/challenge_repository.dart';

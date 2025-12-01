@@ -1,3 +1,5 @@
+import 'package:bdui_server/infrastructure/data/repositories/http_template_repository.dart';
+import 'package:bdui_server/infrastructure/domain/use_cases/render_template_use_case.dart';
 import 'package:bdui_server/server.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' as io;
@@ -13,6 +15,13 @@ void main() async {
       challengeRepository,
       homeScreenGenerator,
     );
+
+    final templateRepository = HttpTemplateRepository();
+
+    final renderTemplateUseCase = RenderTemplateUseCase(
+      templateRepository,
+    );
+
     final trackProgressUseCase = TrackProgressUseCase(challengeRepository);
 
     final challengeController = ChallengeController(
@@ -23,6 +32,7 @@ void main() async {
       challengeRepository: challengeRepository,
       generateHomeScreenUseCase: generateHomeScreenUseCase,
       challengeDetailGenerator: challengeDetailGenerator,
+      renderTemplateUseCase: renderTemplateUseCase,
     );
 
     // 2. Создаем роутер

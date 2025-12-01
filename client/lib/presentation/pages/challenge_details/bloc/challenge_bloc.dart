@@ -22,7 +22,9 @@ class ChallengeBloc extends Bloc<ChallengeEvent, ChallengeState> {
     try {
       final bduiElement = await getChallengeUseCase.execute(event.challengeId);
       emit(ChallengeLoadedState(bduiElement));
-    } catch (e) {
+    } catch (e, s) {
+      print(s);
+      print(e);
       emit(ChallengeErrorState(e.toString()));
     }
   }
