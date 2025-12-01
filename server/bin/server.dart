@@ -9,7 +9,6 @@ void main() async {
     // 1. Создаем зависимости вручную
     final challengeRepository = ShelfChallengeRepository();
     final homeScreenGenerator = HomeScreenBDUIGenerator();
-    final challengeDetailGenerator = ChallengeDetailBDUIGenerator();
 
     final generateHomeScreenUseCase = GenerateBDUIHomeScreenUseCase(
       challengeRepository,
@@ -31,7 +30,6 @@ void main() async {
     final bduiController = BDUIController(
       challengeRepository: challengeRepository,
       generateHomeScreenUseCase: generateHomeScreenUseCase,
-      challengeDetailGenerator: challengeDetailGenerator,
       renderTemplateUseCase: renderTemplateUseCase,
     );
 

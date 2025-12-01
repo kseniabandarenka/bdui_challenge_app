@@ -5,18 +5,15 @@ import 'package:bdui_server/infrastructure/domain/use_cases/render_template_use_
 import 'package:bdui_server/utils/json_utils.dart';
 import 'package:shared/domain/repositories/challenge_repository.dart';
 import 'package:shelf/shelf.dart';
-import 'package:bdui_server/infrastructure/bdui_generator/challenge_detail_generator.dart';
 
 class BDUIController {
   final ChallengeRepository challengeRepository;
   final GenerateBDUIHomeScreenUseCase generateHomeScreenUseCase;
-  final ChallengeDetailBDUIGenerator challengeDetailGenerator;
   final RenderTemplateUseCase renderTemplateUseCase;
 
   BDUIController({
     required this.challengeRepository,
     required this.generateHomeScreenUseCase,
-    required this.challengeDetailGenerator,
     required this.renderTemplateUseCase,
   });
 
