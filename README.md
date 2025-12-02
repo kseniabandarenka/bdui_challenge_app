@@ -50,6 +50,10 @@ dependencies:
 cd shared  
 dart pub get 
 
+# Template Server
+cd template_server 
+dart pub get 
+
 # Server
 cd server 
 dart pub get 
