@@ -27,34 +27,33 @@ class BDUIController {
     }
   }
 
-/// Получение BDUI для детальной страницы челленджа
-Future<Response> getChallengeDetail(Request request, String id) async {
-  try {
-    final challenge = await challengeRepository.getChallengeById(id);
-    final challengeData = {
-      'id': challenge.id,
-      'title': challenge.title,
-      'category': challenge.category,
-      'description': challenge.description,
-      'progressCurrent': challenge.progressCurrent,
-      'progressTotal': challenge.progressTotal,
-      'progressPercentage':
-          (challenge.progressPercentage * 100).toStringAsFixed(1),
-    };
+  /// Получение BDUI для детальной страницы челленджа
+  Future<Response> getChallengeDetail(Request request, String id) async {
+    try {
+      final challenge = await challengeRepository.getChallengeById(id);
+      final challengeData = {
+        'id': challenge.id,
+        'title': challenge.title,
+        'category': challenge.category,
+        'description': challenge.description,
+        'progressCurrent': challenge.progressCurrent,
+        'progressTotal': challenge.progressTotal,
+        'progressPercentage':
+            (challenge.progressPercentage * 100).toStringAsFixed(1),
+      };
 
-    final ui =
-        await renderTemplateUseCase.execute('challenge_detail', challengeData);
-    final jsonString = jsonEncode(ui);
+      final ui = await renderTemplateUseCase.execute(
+          'challenge_detail', challengeData);
+      final jsonString = jsonEncode(ui);
 
-    return Response.ok(
-      jsonString,
-      headers: {'Content-Type': 'application/json'},
-    );
-  } catch (e, s) {
-    print(e);
-    print(s);
-    return JsonUtils.jsonError('Challenge not found: $e', statusCode: 404);
+      return Response.ok(
+        jsonString,
+        headers: {'Content-Type': 'application/json'},
+      );
+    } catch (e, s) {
+      print(e);
+      print(s);
+      return JsonUtils.jsonError('Challenge not found: $e', statusCode: 404);
+    }
   }
 }
-}
-

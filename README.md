@@ -73,6 +73,13 @@ flutter pub run build_runner build
 
 ## Run Application
 
+### Start Template Server
+
+```bash
+cd template_server
+dart run bin/template_server.dart
+```
+
 ### Start Server
 
 ```bash

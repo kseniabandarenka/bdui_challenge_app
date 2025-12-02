@@ -11,8 +11,7 @@ class GetTodaysChallengesUseCase {
     final today = DateTime.now();
 
     return challenges.where((challenge) {
-      final isToday =
-          challenge.createdAt.year == today.year &&
+      final isToday = challenge.createdAt.year == today.year &&
           challenge.createdAt.month == today.month &&
           challenge.createdAt.day == today.day;
       return isToday || !challenge.completed;
