@@ -80,14 +80,6 @@
                 "child": {
                     "type": "button",
                     "value": "✅ Отметить прогресс",
-                    "style": {
-                        "backgroundColor": "#2196F3",
-                        "textColor": "#FFFFFF",
-                        "padding": {
-                            "top": 16,
-                            "bottom": 16
-                        }
-                    },
                     "actions": [
                         {
                             "type": "button",

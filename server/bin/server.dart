@@ -1,49 +1,24 @@
-import 'package:bdui_server/infrastructure/data/repositories/http_template_repository.dart';
-import 'package:bdui_server/infrastructure/domain/use_cases/render_template_use_case.dart';
+import 'dart:io';
 import 'package:bdui_server/server.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' as io;
 
 void main() async {
   try {
-    // 1. Создаем зависимости вручную
-    final challengeRepository = ShelfChallengeRepository();
-    final homeScreenGenerator = HomeScreenBDUIGenerator();
+    // 1. Настраиваем зависимости
+    setupDependencies();
 
-    final generateHomeScreenUseCase = GenerateBDUIHomeScreenUseCase(
-      challengeRepository,
-      homeScreenGenerator,
-    );
-
-    final templateRepository = HttpTemplateRepository();
-
-    final renderTemplateUseCase = RenderTemplateUseCase(
-      templateRepository,
-    );
-
-    final trackProgressUseCase = TrackProgressUseCase(challengeRepository);
-
-    final challengeController = ChallengeController(
-      challengeRepository,
-      trackProgressUseCase,
-    );
-    final bduiController = BDUIController(
-      challengeRepository: challengeRepository,
-      generateHomeScreenUseCase: generateHomeScreenUseCase,
-      renderTemplateUseCase: renderTemplateUseCase,
-    );
-
-    // 2. Создаем роутер
-    final appRouter = AppRouter(challengeController, bduiController);
+    // 2. Получаем роутер из DI контейнера
+    final appRouter = getIt.get<AppRouter>();
 
     // 3. Добавляем middleware
     final handler = Pipeline()
-        .addMiddleware(_corsHeaders)
+        .addMiddleware(_corsMiddleware)
         .addMiddleware(_logRequests)
         .addHandler(appRouter.router);
 
     // 4. Запускаем сервер
-    final _ = await io.serve(handler, 'localhost', 8080);
+    final _ = await io.serve(handler, InternetAddress.anyIPv4, 8080);
 
     print('🚀 BDUI Server running on http://localhost:8080');
     print('📋 Available endpoints:');
@@ -59,14 +34,25 @@ void main() async {
 }
 
 // CORS middleware
-Middleware get _corsHeaders {
-  return (Handler handler) {
+Middleware get _corsMiddleware {
+  return (Handler innerHandler) {
     return (Request request) async {
-      final response = await handler(request);
+      // Обрабатываем OPTIONS
+      if (request.method == 'OPTIONS') {
+        return Response.ok('', headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+          'Access-Control-Allow-Headers': 'Origin, Content-Type, Accept',
+          'Access-Control-Max-Age': '86400',
+        });
+      }
+
+      final response = await innerHandler(request);
       return response.change(headers: {
+        ...response.headers,
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-        'Access-Control-Allow-Headers': 'Origin, Content-Type',
+        'Access-Control-Allow-Headers': 'Origin, Content-Type, Accept',
       });
     };
   };

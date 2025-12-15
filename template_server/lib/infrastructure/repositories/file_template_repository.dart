@@ -38,14 +38,35 @@ class FileTemplateRepository implements TemplateRepository {
     Map<String, dynamic> template,
     Map<String, dynamic> data,
   ) {
+    // Конвертируем шаблон в строку JSON
     final jsonString = json.encode(template);
     String result = jsonString;
 
-    data.forEach((key, value) {
-      result = result.replaceAll('"{{$key}}"', '"$value"');
-      result = result.replaceAll('{{$key}}', '$value');
-    });
+    // Сначала обрабатываем сложные значения (списки, мапы)
+    for (final entry in data.entries) {
+      if (entry.value is List || entry.value is Map) {
+        final valueJson = json.encode(entry.value);
+        result = result.replaceAll('"{{${entry.key}}}"', valueJson);
+      }
+    }
 
-    return json.decode(result);
+    // Затем простые значения
+    for (final entry in data.entries) {
+      if (entry.value is! List && entry.value is! Map) {
+        if (entry.value is num || entry.value is bool) {
+          // Числа и булевы без кавычек
+          result =
+              result.replaceAll('"{{${entry.key}}}"', entry.value.toString());
+          result =
+              result.replaceAll('{{${entry.key}}}', entry.value.toString());
+        } else {
+          // Строки с кавычками
+          result = result.replaceAll('"{{${entry.key}}}"', '"${entry.value}"');
+          result = result.replaceAll('{{${entry.key}}}', '${entry.value}');
+        }
+      }
+    }
+
+    return json.decode(result) as Map<String, dynamic>;
   }
 }

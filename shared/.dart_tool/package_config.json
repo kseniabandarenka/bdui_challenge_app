@@ -3,15 +3,15 @@
   "packages": [
     {
       "name": "_fe_analyzer_shared",
-      "rootUri": "file:///Users/bandarenka_ka/.pub-cache/hosted/artifactory.st.by%2547artifactory%2547api%2547pub%2547dart-bybox%2547/_fe_analyzer_shared-67.0.0",
+      "rootUri": "file:///Users/bandarenka_ka/.pub-cache/hosted/artifactory.st.by%2547artifactory%2547api%2547pub%2547dart-bybox%2547/_fe_analyzer_shared-85.0.0",
       "packageUri": "lib/",
-      "languageVersion": "3.0"
+      "languageVersion": "3.5"
     },
     {
       "name": "analyzer",
-      "rootUri": "file:///Users/bandarenka_ka/.pub-cache/hosted/artifactory.st.by%2547artifactory%2547api%2547pub%2547dart-bybox%2547/analyzer-6.4.1",
+      "rootUri": "file:///Users/bandarenka_ka/.pub-cache/hosted/artifactory.st.by%2547artifactory%2547api%2547pub%2547dart-bybox%2547/analyzer-7.7.1",
       "packageUri": "lib/",
-      "languageVersion": "3.0"
+      "languageVersion": "3.5"
     },
     {
       "name": "args",
@@ -33,39 +33,39 @@
     },
     {
       "name": "build",
-      "rootUri": "file:///Users/bandarenka_ka/.pub-cache/hosted/artifactory.st.by%2547artifactory%2547api%2547pub%2547dart-bybox%2547/build-2.4.1",
+      "rootUri": "file:///Users/bandarenka_ka/.pub-cache/hosted/artifactory.st.by%2547artifactory%2547api%2547pub%2547dart-bybox%2547/build-2.4.2",
       "packageUri": "lib/",
-      "languageVersion": "2.19"
+      "languageVersion": "3.6"
     },
     {
       "name": "build_config",
-      "rootUri": "file:///Users/bandarenka_ka/.pub-cache/hosted/artifactory.st.by%2547artifactory%2547api%2547pub%2547dart-bybox%2547/build_config-1.1.1",
+      "rootUri": "file:///Users/bandarenka_ka/.pub-cache/hosted/artifactory.st.by%2547artifactory%2547api%2547pub%2547dart-bybox%2547/build_config-1.1.2",
       "packageUri": "lib/",
-      "languageVersion": "2.14"
+      "languageVersion": "3.6"
     },
     {
       "name": "build_daemon",
-      "rootUri": "file:///Users/bandarenka_ka/.pub-cache/hosted/artifactory.st.by%2547artifactory%2547api%2547pub%2547dart-bybox%2547/build_daemon-4.0.2",
+      "rootUri": "file:///Users/bandarenka_ka/.pub-cache/hosted/artifactory.st.by%2547artifactory%2547api%2547pub%2547dart-bybox%2547/build_daemon-4.0.4",
       "packageUri": "lib/",
-      "languageVersion": "3.4"
+      "languageVersion": "3.6"
     },
     {
       "name": "build_resolvers",
-      "rootUri": "file:///Users/bandarenka_ka/.pub-cache/hosted/artifactory.st.by%2547artifactory%2547api%2547pub%2547dart-bybox%2547/build_resolvers-2.4.2",
+      "rootUri": "file:///Users/bandarenka_ka/.pub-cache/hosted/artifactory.st.by%2547artifactory%2547api%2547pub%2547dart-bybox%2547/build_resolvers-2.4.4",
       "packageUri": "lib/",
-      "languageVersion": "3.0"
+      "languageVersion": "3.6"
     },
     {
       "name": "build_runner",
-      "rootUri": "file:///Users/bandarenka_ka/.pub-cache/hosted/artifactory.st.by%2547artifactory%2547api%2547pub%2547dart-bybox%2547/build_runner-2.4.13",
+      "rootUri": "file:///Users/bandarenka_ka/.pub-cache/hosted/artifactory.st.by%2547artifactory%2547api%2547pub%2547dart-bybox%2547/build_runner-2.4.15",
       "packageUri": "lib/",
-      "languageVersion": "3.5"
+      "languageVersion": "3.6"
     },
     {
       "name": "build_runner_core",
-      "rootUri": "file:///Users/bandarenka_ka/.pub-cache/hosted/artifactory.st.by%2547artifactory%2547api%2547pub%2547dart-bybox%2547/build_runner_core-7.3.2",
+      "rootUri": "file:///Users/bandarenka_ka/.pub-cache/hosted/artifactory.st.by%2547artifactory%2547api%2547pub%2547dart-bybox%2547/build_runner_core-8.0.0",
       "packageUri": "lib/",
-      "languageVersion": "3.5"
+      "languageVersion": "3.6"
     },
     {
       "name": "built_collection",
@@ -75,7 +75,7 @@
     },
     {
       "name": "built_value",
-      "rootUri": "file:///Users/bandarenka_ka/.pub-cache/hosted/artifactory.st.by%2547artifactory%2547api%2547pub%2547dart-bybox%2547/built_value-8.12.0",
+      "rootUri": "file:///Users/bandarenka_ka/.pub-cache/hosted/artifactory.st.by%2547artifactory%2547api%2547pub%2547dart-bybox%2547/built_value-8.12.1",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
@@ -111,9 +111,9 @@
     },
     {
       "name": "dart_style",
-      "rootUri": "file:///Users/bandarenka_ka/.pub-cache/hosted/artifactory.st.by%2547artifactory%2547api%2547pub%2547dart-bybox%2547/dart_style-2.3.6",
+      "rootUri": "file:///Users/bandarenka_ka/.pub-cache/hosted/artifactory.st.by%2547artifactory%2547api%2547pub%2547dart-bybox%2547/dart_style-3.0.1",
       "packageUri": "lib/",
-      "languageVersion": "3.0"
+      "languageVersion": "3.4"
     },
     {
       "name": "file",
@@ -189,9 +189,9 @@
     },
     {
       "name": "json_serializable",
-      "rootUri": "file:///Users/bandarenka_ka/.pub-cache/hosted/artifactory.st.by%2547artifactory%2547api%2547pub%2547dart-bybox%2547/json_serializable-6.8.0",
+      "rootUri": "file:///Users/bandarenka_ka/.pub-cache/hosted/artifactory.st.by%2547artifactory%2547api%2547pub%2547dart-bybox%2547/json_serializable-6.9.5",
       "packageUri": "lib/",
-      "languageVersion": "3.0"
+      "languageVersion": "3.6"
     },
     {
       "name": "lints",
@@ -249,9 +249,9 @@
     },
     {
       "name": "pubspec_parse",
-      "rootUri": "file:///Users/bandarenka_ka/.pub-cache/hosted/artifactory.st.by%2547artifactory%2547api%2547pub%2547dart-bybox%2547/pubspec_parse-1.4.0",
+      "rootUri": "file:///Users/bandarenka_ka/.pub-cache/hosted/artifactory.st.by%2547artifactory%2547api%2547pub%2547dart-bybox%2547/pubspec_parse-1.5.0",
       "packageUri": "lib/",
-      "languageVersion": "3.2"
+      "languageVersion": "3.6"
     },
     {
       "name": "shelf",
@@ -261,21 +261,21 @@
     },
     {
       "name": "shelf_web_socket",
-      "rootUri": "file:///Users/bandarenka_ka/.pub-cache/hosted/artifactory.st.by%2547artifactory%2547api%2547pub%2547dart-bybox%2547/shelf_web_socket-2.0.1",
+      "rootUri": "file:///Users/bandarenka_ka/.pub-cache/hosted/artifactory.st.by%2547artifactory%2547api%2547pub%2547dart-bybox%2547/shelf_web_socket-3.0.0",
       "packageUri": "lib/",
-      "languageVersion": "3.3"
+      "languageVersion": "3.5"
     },
     {
       "name": "source_gen",
-      "rootUri": "file:///Users/bandarenka_ka/.pub-cache/hosted/artifactory.st.by%2547artifactory%2547api%2547pub%2547dart-bybox%2547/source_gen-1.5.0",
+      "rootUri": "file:///Users/bandarenka_ka/.pub-cache/hosted/artifactory.st.by%2547artifactory%2547api%2547pub%2547dart-bybox%2547/source_gen-2.0.0",
       "packageUri": "lib/",
-      "languageVersion": "3.0"
+      "languageVersion": "3.6"
     },
     {
       "name": "source_helper",
-      "rootUri": "file:///Users/bandarenka_ka/.pub-cache/hosted/artifactory.st.by%2547artifactory%2547api%2547pub%2547dart-bybox%2547/source_helper-1.3.5",
+      "rootUri": "file:///Users/bandarenka_ka/.pub-cache/hosted/artifactory.st.by%2547artifactory%2547api%2547pub%2547dart-bybox%2547/source_helper-1.3.7",
       "packageUri": "lib/",
-      "languageVersion": "3.4"
+      "languageVersion": "3.6"
     },
     {
       "name": "source_span",
@@ -321,9 +321,9 @@
     },
     {
       "name": "timing",
-      "rootUri": "file:///Users/bandarenka_ka/.pub-cache/hosted/artifactory.st.by%2547artifactory%2547api%2547pub%2547dart-bybox%2547/timing-1.0.1",
+      "rootUri": "file:///Users/bandarenka_ka/.pub-cache/hosted/artifactory.st.by%2547artifactory%2547api%2547pub%2547dart-bybox%2547/timing-1.0.2",
       "packageUri": "lib/",
-      "languageVersion": "2.14"
+      "languageVersion": "3.4"
     },
     {
       "name": "typed_data",
@@ -368,7 +368,7 @@
       "languageVersion": "3.0"
     }
   ],
-  "generated": "2025-12-01T13:55:14.488001Z",
+  "generated": "2025-12-04T08:24:03.580154Z",
   "generator": "pub",
   "generatorVersion": "3.6.0",
   "flutterRoot": "file:///Users/bandarenka_ka/Documents/frameworks/flutter",

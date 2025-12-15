@@ -1,3 +1,4 @@
+// @dart=3.6
 // ignore_for_file: directives_ordering
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:build_runner_core/build_runner_core.dart' as _i1;
@@ -35,10 +36,19 @@ final _builders = <_i1.BuilderApplication>[
     r'build_resolvers:transitive_digest_cleanup',
     _i4.transitiveDigestCleanup,
   ),
-  _i1.applyPostProcess(r'source_gen:part_cleanup', _i3.partCleanup),
+  _i1.applyPostProcess(
+    r'source_gen:part_cleanup',
+    _i3.partCleanup,
+  ),
 ];
-void main(List<String> args, [_i5.SendPort? sendPort]) async {
-  var result = await _i6.run(args, _builders);
+void main(
+  List<String> args, [
+  _i5.SendPort? sendPort,
+]) async {
+  var result = await _i6.run(
+    args,
+    _builders,
+  );
   sendPort?.send(result);
   _i7.exitCode = result;
 }

@@ -14,6 +14,7 @@ void main() async {
         .addHandler(diContainer.appRouter.router);
 
     // Запуск сервера
+    // ignore: unused_local_variable
     final server = await io.serve(handler, 'localhost', 8082);
 
     print('🚀 Template Server with DI running on http://localhost:8082');

@@ -1,0 +1,35 @@
+{
+    "screen_type": "challenges_list",
+    "title": "Мои челленджи",
+    "layout": {
+        "type": "column",
+        "children": [
+            {
+                "type": "column",
+                "children": [
+                    {
+                        "type": "text",
+                        "value": "🏆 Мои ежедневные челленджи",
+                        "style": {
+                            "fontSize": 24.0,
+                            "fontWeight": "bold",
+                            "color": "#2E7D32"
+                        }
+                    },
+                    {
+                        "type": "text",
+                        "value": "✅ Завершено: {{completedChallenges}} | 🎯 В процессе: {{inProgressChallenges}}",
+                        "style": {
+                            "fontSize": 16.0,
+                            "color": "#666666"
+                        }
+                    }
+                ]
+            },
+            {
+                "type": "challenge_list",
+                "challenges": "{{challenges}}"
+            }
+        ]
+    }
+}
