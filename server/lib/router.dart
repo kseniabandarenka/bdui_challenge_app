@@ -12,9 +12,22 @@ class AppRouter {
   Router get router {
     final router = Router();
 
+    // Редирект с 443 порта (если кто-то пытается по HTTPS)
+    router.all('/<.*>', (Request request) {
+      if (request.requestedUri.scheme == 'https' ||
+          request.requestedUri.port == 443) {
+        final newUrl = request.requestedUri.replace(
+          scheme: 'http',
+          port: 8080,
+        );
+        return Response.movedPermanently(newUrl.toString());
+      }
+      return Response.notFound('Not found');
+    });
+
     // Health check
     router.get('/', (Request request) {
-      return Response.ok('🚀 BDUI Server with Clean Architecture is Running!');
+      return Response.ok('BDUI Server with Clean Architecture is Running!');
     });
 
     // Regular API

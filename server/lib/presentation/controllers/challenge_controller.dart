@@ -1,4 +1,4 @@
-import 'package:bdui_server/infrastructure/domain/use_cases/track_progress_use_case.dart';
+import 'package:bdui_server/domain/use_cases/track_progress_use_case.dart';
 import 'package:bdui_server/utils/json_utils.dart';
 import 'package:shared/domain/models/challenge.dart';
 import 'package:shared/domain/repositories/challenge_repository.dart';

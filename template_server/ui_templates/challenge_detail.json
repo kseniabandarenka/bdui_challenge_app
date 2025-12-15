@@ -1,0 +1,149 @@
+{
+    "screen_type": "challenge_detail",
+    "title": "{{title}}",
+    "layout": {
+        "type": "column",
+        "children": [
+            {
+                "type": "column",
+                "children": [
+                    {
+                        "type": "text",
+                        "value": "{{category}}",
+                        "style": {
+                            "fontSize": 16,
+                            "color": "#666666"
+                        }
+                    },
+                    {
+                        "type": "text",
+                        "value": "{{title}}",
+                        "style": {
+                            "fontSize": 28,
+                            "fontWeight": "bold"
+                        }
+                    }
+                ]
+            },
+            {
+                "type": "container",
+                "decoration": {
+                    "padding": {
+                        "top": 16,
+                        "bottom": 16
+                    }
+                },
+                "child": {
+                    "type": "text",
+                    "value": "{{description}}",
+                    "style": {
+                        "fontSize": 16,
+                        "color": "#424242"
+                    }
+                }
+            },
+            {
+                "type": "column",
+                "children": [
+                    {
+                        "type": "text",
+                        "value": "📊 Ваш прогресс",
+                        "style": {
+                            "fontSize": 20,
+                            "fontWeight": "bold",
+                            "color": "#1976D2"
+                        }
+                    },
+                    {
+                        "type": "progress_bar",
+                        "current": "{{progressCurrent}}",
+                        "total": "{{progressTotal}}",
+                        "value": "{{progressCurrent}}/{{progressTotal}}"
+                    },
+                    {
+                        "type": "text",
+                        "value": "{{progressCurrent}}/{{progressTotal}} ({{progressPercentage}}%)",
+                        "style": {
+                            "fontSize": 16,
+                            "fontWeight": "bold"
+                        }
+                    }
+                ]
+            },
+            {
+                "type": "container",
+                "decoration": {
+                    "padding": {
+                        "top": 20
+                    }
+                },
+                "child": {
+                    "type": "button",
+                    "value": "✅ Отметить прогресс",
+                    "actions": [
+                        {
+                            "type": "button",
+                            "text": "✅ Отметить прогресс",
+                            "action": {
+                                "type": "show_bottom_sheet",
+                                "challengeId": "{{id}}",
+                                "sheet": {
+                                    "type": "column",
+                                    "children": [
+                                        {
+                                            "type": "text",
+                                            "value": "Введите ваш прогресс:",
+                                            "style": {
+                                                "fontSize": 16.0,
+                                                "fontWeight": "bold"
+                                            }
+                                        },
+                                        {
+                                            "type": "container",
+                                            "decoration": {
+                                                "padding": {
+                                                    "top": 20.0,
+                                                    "bottom": 20.0
+                                                }
+                                            },
+                                            "child": {
+                                                "key": "progress_input",
+                                                "type": "text_field",
+                                                "value": "0.0"
+                                            }
+                                        },
+                                        {
+                                            "type": "button",
+                                            "value": "💾 Сохранить",
+                                            "style": {
+                                                "color": "#FFFFFF"
+                                            },
+                                            "decoration": {
+                                                "color": "#4CAF50",
+                                                "padding": {
+                                                    "top": 16.0,
+                                                    "bottom": 16.0
+                                                }
+                                            },
+                                            "actions": [
+                                                {
+                                                    "type": "button",
+                                                    "text": "💾 Сохранить",
+                                                    "action": {
+                                                        "type": "track_progress",
+                                                        "challengeId": "{{id}}",
+                                                        "progressKey": "progress_input"
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+}
