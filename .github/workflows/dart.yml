@@ -16,6 +16,7 @@ jobs:
       - uses: dart-lang/setup-dart@v1
       - run: dart pub get
       - run: dart run build_runner build --delete-conflicting-outputs
+      - run: dart format --output=none --set-exit-if-changed . --exclude="**/*.g.dart"
       - run: dart analyze
       - run: dart test
 
@@ -28,6 +29,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: dart-lang/setup-dart@v1
       - run: dart pub get
+      - run: dart format --output=none --set-exit-if-changed . --exclude="**/*.g.dart"
       - run: dart analyze
       - run: dart test
 
@@ -40,6 +42,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: dart-lang/setup-dart@v1
       - run: dart pub get
+      - run: dart format --output=none --set-exit-if-changed . --exclude="**/*.g.dart"
       - run: dart analyze
       - run: dart test
 
@@ -55,5 +58,6 @@ jobs:
           flutter-version: 'stable'
           cache: true
       - run: flutter pub get
+      - run: dart format --output=none --set-exit-if-changed . --exclude="**/*.g.dart"
       - run: flutter analyze
       - run: flutter test
