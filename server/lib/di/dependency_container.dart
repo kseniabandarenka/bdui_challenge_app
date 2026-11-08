@@ -1,50 +1,52 @@
-import 'package:bdui_server/data/repositories/http_template_repository.dart';
-import 'package:bdui_server/domain/use_cases/render_template_use_case.dart';
 import 'package:bdui_server/server.dart';
 import 'package:get_it/get_it.dart';
+import 'package:shared/shared.dart';
 
 final getIt = GetIt.instance;
 
 void setupDependencies() {
-  getIt.registerLazySingleton<ShelfChallengeRepository>(
-    () => ShelfChallengeRepository(),
+  // Репозитории регистрируются по интерфейсам домена.
+  getIt.registerLazySingleton<ChallengeRepository>(
+    () => JsonFileChallengeRepository(),
   );
-
-  getIt.registerLazySingleton<HttpTemplateRepository>(
+  getIt.registerLazySingleton<TemplateRepository>(
     () => HttpTemplateRepository(),
   );
 
-  getIt.registerLazySingleton<RenderTemplateUseCase>(
-    () => RenderTemplateUseCase(
-      getIt.get<HttpTemplateRepository>(),
-    ),
+  getIt.registerLazySingleton<GetChallengesUseCase>(
+    () => GetChallengesUseCase(getIt<ChallengeRepository>()),
   );
-
+  getIt.registerLazySingleton<GetChallengeByIdUseCase>(
+    () => GetChallengeByIdUseCase(getIt<ChallengeRepository>()),
+  );
+  getIt.registerLazySingleton<GetHomeScreenSummaryUseCase>(
+    () => GetHomeScreenSummaryUseCase(getIt<ChallengeRepository>()),
+  );
   getIt.registerLazySingleton<TrackProgressUseCase>(
-    () => TrackProgressUseCase(
-      getIt.get<ShelfChallengeRepository>(),
-    ),
+    () => TrackProgressUseCase(getIt<ChallengeRepository>()),
+  );
+  getIt.registerLazySingleton<RenderTemplateUseCase>(
+    () => RenderTemplateUseCase(getIt<TemplateRepository>()),
   );
 
   getIt.registerLazySingleton<ChallengeController>(
     () => ChallengeController(
-      getIt.get<ShelfChallengeRepository>(),
-      getIt.get<TrackProgressUseCase>(),
+      getIt<GetChallengesUseCase>(),
+      getIt<TrackProgressUseCase>(),
     ),
   );
-
   getIt.registerLazySingleton<BDUIController>(
     () => BDUIController(
-      challengeRepository: getIt.get<ShelfChallengeRepository>(),
-      renderTemplateUseCase: getIt.get<RenderTemplateUseCase>(),
+      getHomeScreenSummaryUseCase: getIt<GetHomeScreenSummaryUseCase>(),
+      getChallengeByIdUseCase: getIt<GetChallengeByIdUseCase>(),
+      renderTemplateUseCase: getIt<RenderTemplateUseCase>(),
     ),
   );
 
-  // Роутер
   getIt.registerLazySingleton<AppRouter>(
     () => AppRouter(
-      getIt.get<ChallengeController>(),
-      getIt.get<BDUIController>(),
+      getIt<ChallengeController>(),
+      getIt<BDUIController>(),
     ),
   );
 }

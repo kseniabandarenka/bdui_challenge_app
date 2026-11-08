@@ -1,5 +1,3 @@
-import 'package:shared/data/models/challenge_model.dart';
-
 class Challenge {
   final String id;
   final String title;
@@ -23,9 +21,12 @@ class Challenge {
 
   double get progressPercentage =>
       progressTotal > 0 ? progressCurrent / progressTotal : 0;
+
   bool get isInProgress => progressCurrent > 0 && !completed;
-  bool get isOverdue =>
-      !completed && DateTime.now().isAfter(createdAt.add(Duration(days: 1)));
+
+  /// Время передаётся снаружи, чтобы сущность оставалась детерминированной.
+  bool isOverdue(DateTime now) =>
+      !completed && now.isAfter(createdAt.add(const Duration(days: 1)));
 
   Challenge updateProgress(double newProgress) {
     return Challenge(
@@ -33,39 +34,10 @@ class Challenge {
       title: title,
       description: description,
       category: category,
-      progressCurrent: newProgress.clamp(0, progressTotal),
+      progressCurrent: newProgress.clamp(0, progressTotal).toDouble(),
       progressTotal: progressTotal,
       completed: newProgress >= progressTotal,
       createdAt: createdAt,
-    );
-  }
-}
-
-// Mapper для конвертации между слоями
-class ChallengeMapper {
-  static Challenge toEntity(ChallengeModel model) {
-    return Challenge(
-      id: model.id,
-      title: model.title,
-      description: model.description,
-      category: model.category,
-      progressCurrent: model.progressCurrent,
-      progressTotal: model.progressTotal,
-      completed: model.completed,
-      createdAt: model.createdAt,
-    );
-  }
-
-  static ChallengeModel toModel(Challenge entity) {
-    return ChallengeModel(
-      id: entity.id,
-      title: entity.title,
-      description: entity.description,
-      category: entity.category,
-      progressCurrent: entity.progressCurrent,
-      progressTotal: entity.progressTotal,
-      completed: entity.completed,
-      createdAt: entity.createdAt,
     );
   }
 }

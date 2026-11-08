@@ -1,6 +1,8 @@
 export 'domain/models/challenge.dart';
 export 'domain/repositories/challenge_repository.dart';
+export 'domain/exceptions/challenge_not_found_exception.dart';
 export 'data/models/challenge_model.dart';
+export 'data/mappers/challenge_mapper.dart';
 export 'data/models/bdui/bdui_card_action_model.dart';
 export 'data/models/bdui/bdui_type_model.dart';
 export 'data/models/bdui/bdui_screen_model.dart';

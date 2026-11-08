@@ -2,10 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:shared/shared.dart';
 
-class ShelfChallengeRepository implements ChallengeRepository {
+class JsonFileChallengeRepository implements ChallengeRepository {
   final String _dataPath;
 
-  ShelfChallengeRepository({String? dataPath})
+  JsonFileChallengeRepository({String? dataPath})
       : _dataPath = dataPath ?? 'lib/data/json/challenges.json';
 
   Future<List<ChallengeModel>> _loadChallengesFromFile() async {
@@ -17,14 +17,10 @@ class ShelfChallengeRepository implements ChallengeRepository {
       }
 
       final jsonString = await file.readAsString();
-      print(jsonString);
       final List<dynamic> jsonList = json.decode(jsonString);
-
-      print(jsonList.map((json) => ChallengeModel.fromJson(json)).toList());
 
       return jsonList.map((json) => ChallengeModel.fromJson(json)).toList();
     } catch (e) {
-      print('Error loading challenges from file: $e');
       throw Exception('Failed to load challenges: $e');
     }
   }
@@ -47,7 +43,6 @@ class ShelfChallengeRepository implements ChallengeRepository {
 
       await file.writeAsString(jsonString);
     } catch (e) {
-      print('Error saving challenges to file: $e');
       throw Exception('Failed to save challenges: $e');
     }
   }
@@ -100,7 +95,7 @@ class ShelfChallengeRepository implements ChallengeRepository {
     final challenges = await _loadChallengesFromFile();
     final model = challenges.firstWhere(
       (challenge) => challenge.id == id,
-      orElse: () => throw Exception('Challenge not found: $id'),
+      orElse: () => throw ChallengeNotFoundException(id),
     );
     return ChallengeMapper.toEntity(model);
   }
@@ -111,31 +106,12 @@ class ShelfChallengeRepository implements ChallengeRepository {
     final index = challenges.indexWhere((model) => model.id == challenge.id);
 
     if (index == -1) {
-      throw Exception('Challenge not found: ${challenge.id}');
+      throw ChallengeNotFoundException(challenge.id);
     }
 
-    final updatedModel = ChallengeMapper.toModel(challenge);
-    challenges[index] = updatedModel;
-    await _saveChallengesToFile(challenges); // Сохраняем изменения в файл
+    challenges[index] = ChallengeMapper.toModel(challenge);
+    await _saveChallengesToFile(challenges);
 
     return challenge;
-  }
-
-  @override
-  Future<void> trackProgress(String challengeId, int progress) async {
-    final challenges = await _loadChallengesFromFile();
-    final index = challenges.indexWhere((model) => model.id == challengeId);
-
-    if (index == -1) {
-      throw Exception('Challenge not found: $challengeId');
-    }
-
-    final model = challenges[index];
-    final challenge = ChallengeMapper.toEntity(model);
-    final updatedChallenge = challenge.updateProgress(progress.toDouble());
-    final updatedModel = ChallengeMapper.toModel(updatedChallenge);
-
-    challenges[index] = updatedModel;
-    await _saveChallengesToFile(challenges); // Сохраняем изменения в файл
   }
 }

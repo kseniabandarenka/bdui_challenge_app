@@ -7,5 +7,5 @@ class GetChallengesUseCase {
 
   GetChallengesUseCase(this.gateway);
 
-  Future<List<ChallengeModel>> execute() => gateway.getChallenges();
+  Future<List<Challenge>> execute() => gateway.getChallenges();
 }

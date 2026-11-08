@@ -8,12 +8,15 @@ class ChallengesGatewayImpl implements ChallengesGateway {
   ChallengesGatewayImpl(this.api);
 
   @override
-  Future<List<ChallengeModel>> getChallenges() => api.getChallenges();
+  Future<List<Challenge>> getChallenges() async {
+    final models = await api.getChallenges();
+    return models.map(ChallengeMapper.toEntity).toList();
+  }
 
   @override
   Future<void> trackProgress({
-    required ProgressRequestModel progress,
+    required double progress,
     required String id,
   }) =>
-      api.trackProgress(progress, id: id);
+      api.trackProgress(ProgressRequestModel(progress: progress), id: id);
 }
